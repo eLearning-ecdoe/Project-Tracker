@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eLearning Project Tracker</title>
+
+    <style>
+      :root {
+        --page-bg: #ffffff;
+        --text-main: #1a1a1a;
+        --text-dim: #4a4a4a;
+
+        --card-bg: #dee1ec;
+        --card-border: rgba(0, 0, 0, 0.08);
+        --card-radius: 16px;
+        --card-shadow: 0 24px 32px rgba(0, 0, 0, 0.08);
+
+        --status-not-started-bg: #c62828;
+        --status-not-started-text: #ffffff;
+
+        --status-in-progress-bg: #ef6c00;
+        --status-in-progress-text: #ffffff;
+
+        --status-completed-bg: #2e7d32;
+        --status-completed-text: #ffffff;
+
+        --accent-1: #6366f1;
+        --accent-2: #14b8a6;
+        --accent-3: #0ea5e9;
+        --accent-4: #facc15;
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--page-bg);
+        color: var(--text-main);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
+          Roboto, "Segoe UI", sans-serif;
+        line-height: 1.45;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        gap: 2rem;
+      }
+
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .title-block h1 {
+        font-size: 1.4rem;
+        font-weight: 750;
+        color: #305ca3;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .badge-env {
+        background: #305ca3;
+        font-size: 0.7rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        line-height: 1.2;
+        color: #fff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .title-block p {
+        color: var(--text-dim);
+        font-size: 1rem;
+        font-weight: 500;
+        margin-top: 0.28rem;
+        max-width: 60ch;
+        margin-bottom: 1rem;
+      }
+
+      .top-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: flex-start;
+        gap: 1rem;
+        font-size: 2rem;
+      }
+
+      .meta-box {
+        background-color: #dee1ec;
+        border: 2px solid transparent;
+        border-color: #dee1ec;
+        box-shadow: #000;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        min-width: 8rem;
+        box-shadow: 0 18px 24px rgba(0, 0, 0, 0.07);
+      }
+
+      .meta-label {
+        font-size: 0.88rem;
+        color: var(--text-main);
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+      }
+
+      .meta-value {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-main);
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        min-width: 12rem;
+      }
+
+      .filter-group label {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        margin-bottom: 0.4rem;
+        font-weight: 500;
+      }
+
+      .filter-group select,
+      .filter-group input {
+        background-color: #dee1ec;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        color: var(--text-main);
+        padding: 0.6rem 0.7rem;
+        border-radius: 0.5rem;
+        font-size: 0.8rem;
+        outline: none;
+        box-shadow: 0 10px 16px rgba(0, 0, 0, 0.06);
+      }
+
+      .filter-group select:focus,
+      .filter-group input:focus {
+        border-color: var(--accent-1);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+      }
+
+      .projects-grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+        gap: 1rem;
+      }
+
+      .project-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: var(--card-radius);
+        padding: 1rem 1.25rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        min-height: 260px;
+        position: relative;
+        box-shadow: var(--card-shadow);
+      }
+
+      .proj-top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .proj-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-main);
+        line-height: 1.3;
+        margin-bottom: 5px;
+      }
+
+      .proj-sub {
+        font-size: 0.89rem;
+        color: var(--text-dim);
+      }
+
+      .status-pill {
+        align-self: flex-start;
+        font-size: 0.7rem;
+        font-weight: 600;
+        line-height: 1.2;
+        padding: 0.5rem 0.6rem;
+        border-radius: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        min-width: 5rem;
+        text-align: center;
+        box-shadow: 0 12px 16px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .status-not-started {
+        background-color: var(--status-not-started-bg);
+        color: var(--status-not-started-text);
+      }
+
+      .status-in-progress {
+        background-color: var(--status-in-progress-bg);
+        color: var(--status-in-progress-text);
+      }
+
+      .status-completed {
+        background-color: var(--status-completed-bg);
+        color: var(--status-completed-text);
+      }
+
+      .dates-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.7rem;
+        color: var(--text-dim);
+      }
+
+      .dates-row span {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 0.5rem;
+        padding: 0.4rem 0.6rem;
+        box-shadow: 0 10px 16px rgba(0, 0, 0, 0.04);
+        font-size: 0.77rem;
+      }
+
+      .dates-row .label {
+        font-weight: 500;
+        color: var(--text-dim);
+      }
+
+      .dates-row .val {
+        color: var(--text-main);
+        font-weight: 600;
+      }
+
+      .accordion {
+        border: 1px solid rgba(0, 0, 0, 0.07);
+        border-radius: 0.6rem;
+        background: #fff;
+        box-shadow: 0 10px 16px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+      }
+
+      .accordion-header {
+        width: 100%;
+
+        background: linear-gradient(
+          to right,
+          rgba(99, 102, 241, 0.08),
+          rgba(14, 165, 233, 0.08),
+          rgba(20, 184, 166, 0.08)
+        );
+
+        border: 0;
+        outline: 0;
+        text-align: left;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-main);
+        padding: 0.7rem 0.8rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .accordion-header .acc-title {
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-size: 0.7rem;
+        color: var(--text-main);
+      }
+
+      .accordion-header .acc-icon {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--accent-1);
+      }
+
+      .accordion-content {
+        display: none;
+        padding: 0.8rem;
+        font-size: 0.89rem;
+        color: var(--text-main);
+        background-color: #fff;
+      }
+
+      .accordion.open .accordion-content {
+        display: block;
+      }
+
+      footer {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: auto;
+      }
+
+      @media (max-width: 480px) {
+        header {
+          flex-direction: column;
+        }
+        .top-meta {
+          width: 100%;
+        }
+        .filters {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="title-block">
+        <h1>
+          eLearning Project Tracker
+          <span class="badge-env">ECDOE</span>
+        </h1>
+        <p>
+          This Project Tracker provides a centralized overview of projects under
+          the e-Learning Directorate, including those from other directorates,
+          enabling effective monitoring, coordination, and progress reporting
+          across units.
+        </p>
+      </div>
+
+      <div class="top-meta">
+        <div class="meta-box">
+          <div class="meta-label">Total Projects</div>
+          <div class="meta-value" id="totalProjects">0</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">In Progress</div>
+          <div class="meta-value" id="inProgressCount">0</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">At Risk</div>
+          <div class="meta-value" id="atRiskCount">0</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">Last Updated</div>
+          <div class="meta-value" id="lastUpdated">—</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="filters">
+      <div class="filter-group">
+        <label for="statusFilter">Filter by Status</label>
+        <select id="statusFilter">
+          <option value="">All</option>
+          <option value="not started">Not started</option>
+          <option value="in progress">In progress</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="searchInput">Search by Project / Supervisor / Member</label>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="e.g. Moodle, Mr. Sigodi..."
+        />
+      </div>
+    </section>
+
+    <main class="projects-grid" id="projectsGrid"></main>
+
+    <footer>
+      e-Learning Directorate · Eastern Cape Department of Education · Internal
+      use only
+    </footer>
+
+    <script>
+      // 1. CONFIG
+      const CSV_URL =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vStc1DyLOeG6vO20wTdkmWvgYWN40VpT-u9hHQ0KgAF-peFTiQW1LjjHiVK208J8Nno5RVVI9YkJAUw/pub?gid=0&single=true&output=csv";
+
+      // 2. CSV PARSER
+      function splitCSVRow(row) {
+        const cells = [];
+        let current = "";
+        let inQuotes = false;
+
+        for (let i = 0; i < row.length; i++) {
+          const char = row[i];
+          const nextChar = row[i + 1];
+
+          if (char === '"') {
+            if (inQuotes && nextChar === '"') {
+              current += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (char === "," && !inQuotes) {
+            cells.push(current);
+            current = "";
+          } else {
+            current += char;
+          }
+        }
+        cells.push(current);
+
+        return cells.map((c) => c.trim());
+      }
+
+      function parseCSV(csvText) {
+        const rows = csvText.trim().split(/\r?\n/);
+        const header = splitCSVRow(rows[0]);
+        const dataRows = rows.slice(1);
+
+        return dataRows.map((r) => {
+          const cells = splitCSVRow(r);
+          const obj = {};
+          header.forEach((h, i) => {
+            obj[h.trim()] = cells[i] !== undefined ? cells[i] : "";
+          });
+          return {
+            _colA: cells[0] || "",
+            _colB: cells[1] || "",
+            _colC: cells[2] || "",
+            _colD: cells[3] || "",
+            _colE: cells[4] || "",
+            _colF: cells[5] || "",
+            _colG: cells[6] || "",
+            _colH: cells[7] || "",
+            _colI: cells[8] || "",
+            _colJ: cells[9] || "",
+            byHeader: obj,
+          };
+        });
+      }
+
+      // 3. NORMALIZE RECORD
+      function normalizeRecord(rec) {
+        function pickHeader(options) {
+          for (const opt of options) {
+            if (rec.byHeader[opt] !== undefined && rec.byHeader[opt] !== "") {
+              return rec.byHeader[opt];
+            }
+          }
+          return "";
+        }
+
+        let ProjectName =
+          pickHeader([
+            "Project Name",
+            "Project",
+            "PROJECT NAME",
+            "Project Title",
+            "PROJECT",
+          ]) || rec._colA;
+
+        let Supervisor = pickHeader(["Supervisor", "SUPERVISOR"]) || rec._colB;
+
+        let TeamMembers =
+          pickHeader([
+            "Team Members",
+            "TEAM MEMBERS",
+            "Team",
+            "Team Member(s)",
+          ]) || rec._colC;
+
+        let StartDate =
+          pickHeader(["Start Date", "START DATE", "Start"]) || rec._colD;
+
+        let EndDate = pickHeader(["End Date", "END DATE", "End"]) || rec._colE;
+
+        let StatusRaw =
+          pickHeader(["Status", "STATUS", "Project Status"]) || rec._colF;
+
+        let ProblemStatement =
+          pickHeader(["Problem Statement", "PROBLEM STATEMENT"]) || rec._colG;
+
+        let CurrentProgress =
+          pickHeader(["Current Progress", "CURRENT PROGRESS", "Progress"]) ||
+          rec._colH;
+
+        let Challenges = pickHeader(["Challenges", "CHALLENGES"]) || rec._colI;
+
+        let RecommendedSolutions =
+          pickHeader([
+            "Recommended Solutions",
+            "RECOMMENDED SOLUTIONS",
+            "Recommendations",
+          ]) || rec._colJ;
+
+        function clean(v) {
+          return (v || "").toString().trim();
+        }
+
+        return {
+          ProjectName: clean(ProjectName),
+          Supervisor: clean(Supervisor),
+          TeamMembers: clean(TeamMembers),
+          StartDate: clean(StartDate),
+          EndDate: clean(EndDate),
+          Status: clean(StatusRaw),
+          ProblemStatement: clean(ProblemStatement),
+          CurrentProgress: clean(CurrentProgress),
+          Challenges: clean(Challenges),
+          RecommendedSolutions: clean(RecommendedSolutions),
+        };
+      }
+
+      // 4. Decide which rows are REAL projects
+      function isRealProjectRow(p) {
+        const name = (p.ProjectName || "").trim();
+
+        // rule 1: must not be empty
+        if (!name) return false;
+
+        // rule 2: ignore filler / placeholders
+        const low = name.toLowerCase();
+        if (low === "n/a" || low === "na" || low === "none") return false;
+
+        // rule 3: ignore rows that are clearly bullet/continuation lines
+        // e.g. "- The system cannot check..." or "(Content to be added ...)"
+        if (name.startsWith("-")) return false;
+        if (name.startsWith("(")) return false;
+
+        // could also exclude extremely long paragraphs pretending to be names
+        // e.g. more than 120 chars is probably not a project name, it's a description
+        if (name.length > 120) return false;
+
+        return true;
+      }
+
+      // 5. STATUS CLASS
+      function statusClass(statusText) {
+        if (!statusText) return "";
+        const s = statusText.trim().toLowerCase();
+        if (s.includes("not")) return "status-not-started";
+        if (s.includes("progress")) return "status-in-progress";
+        if (
+          s.includes("complete") ||
+          s.includes("done") ||
+          s.includes("finish")
+        )
+          return "status-completed";
+        return "";
+      }
+
+      // 6. Accordion builder
+      function accordionBlock(title, content) {
+        const safeContent = content || "—";
+        return `
+      <div class="accordion">
+        <button class="accordion-header">
+          <span class="acc-title">${title}</span>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="accordion-content">
+          <div>${safeContent.replace(/\n/g, "<br/>")}</div>
+        </div>
+      </div>
+    `;
+      }
+
+      // 7. Card template
+      function renderCard(p) {
+        return `
+      <article class="project-card"
+        data-status="${(p.Status || "").toLowerCase()}"
+        data-searchblob="${(
+          (p.ProjectName || "") +
+          " " +
+          (p.Supervisor || "") +
+          " " +
+          (p.TeamMembers || "")
+        ).toLowerCase()}">
+
+        <div class="proj-top-row">
+          <div>
+            <div class="proj-title">${p.ProjectName || "No project name"}</div>
+            <div class="proj-sub">
+              <strong>Supervisor:</strong> ${p.Supervisor || "—"}<br/>
+              <strong>Team:</strong> ${p.TeamMembers || "—"}
+            </div>
+          </div>
+
+          <div class="status-pill ${statusClass(p.Status)}">
+            ${p.Status || "—"}
+          </div>
+        </div>
+
+        <div class="dates-row">
+          <span>
+            <span class="label">Start:</span>
+            <span class="val">${p.StartDate || "—"}</span>
+          </span>
+          <span>
+            <span class="label">End:</span>
+            <span class="val">${p.EndDate || "—"}</span>
+          </span>
+        </div>
+
+        ${accordionBlock("Problem Statement", p.ProblemStatement)}
+        ${accordionBlock("Current Progress", p.CurrentProgress)}
+        ${accordionBlock("Challenges", p.Challenges)}
+        ${accordionBlock("Recommended Solutions", p.RecommendedSolutions)}
+      </article>
+    `;
+      }
+
+      // 8. State + rendering
+      let PROJECTS = [];
+
+      function renderGrid() {
+        const grid = document.getElementById("projectsGrid");
+        const statusFilterVal = document
+          .getElementById("statusFilter")
+          .value.trim()
+          .toLowerCase();
+        const searchVal = document
+          .getElementById("searchInput")
+          .value.trim()
+          .toLowerCase();
+
+        const filtered = PROJECTS.filter((p) => {
+          const statusText = (p.Status || "").toLowerCase();
+          const matchesStatus =
+            !statusFilterVal || statusText.includes(statusFilterVal);
+
+          const blob = (
+            (p.ProjectName || "") +
+            " " +
+            (p.Supervisor || "") +
+            " " +
+            (p.TeamMembers || "")
+          ).toLowerCase();
+          const matchesSearch = !searchVal || blob.includes(searchVal);
+
+          return matchesStatus && matchesSearch;
+        });
+
+        grid.innerHTML = filtered.map(renderCard).join("");
+
+        document.getElementById("totalProjects").textContent = PROJECTS.length;
+        document.getElementById("inProgressCount").textContent =
+          PROJECTS.filter((p) =>
+            (p.Status || "").toLowerCase().includes("progress")
+          ).length;
+        document.getElementById("atRiskCount").textContent = PROJECTS.filter(
+          (p) => (p.Status || "").toLowerCase().includes("risk")
+        ).length;
+
+        setupAccordions();
+      }
+
+      // 9. Accordion behaviour
+      function setupAccordions() {
+        const accordions = document.querySelectorAll(".accordion");
+        accordions.forEach((acc) => {
+          const header = acc.querySelector(".accordion-header");
+          const icon = acc.querySelector(".acc-icon");
+          header.addEventListener("click", () => {
+            acc.classList.toggle("open");
+            icon.textContent = acc.classList.contains("open") ? "−" : "+";
+          });
+        });
+      }
+
+      // 10. Load data
+      async function loadSheetData() {
+        try {
+          const res = await fetch(CSV_URL);
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          const csvText = await res.text();
+
+          const parsed = parseCSV(csvText);
+
+          PROJECTS = parsed.map(normalizeRecord).filter(isRealProjectRow); // <-- NEW FILTER
+
+          document.getElementById("lastUpdated").textContent =
+            new Date().toLocaleString();
+
+          renderGrid();
+        } catch (err) {
+          console.error("Failed to load sheet data:", err);
+          const grid = document.getElementById("projectsGrid");
+          grid.innerHTML = `
+        <article class="project-card">
+          <div class="proj-title">Could not load data</div>
+          <p style="font-size:0.8rem; color:#c62828;">
+            Check that the sheet is still published and reachable.
+          </p>
+        </article>`;
+        }
+      }
+
+      // 11. listeners + init
+      document
+        .getElementById("statusFilter")
+        .addEventListener("change", renderGrid);
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", renderGrid);
+
+      loadSheetData();
+    </script>
+  </body>
+</html>
