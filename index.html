@@ -4,650 +4,193 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>eLearning Project Tracker — ECDOE</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <style>
-      /* ─── Theme tokens ───────────────────────────────────────────────────── */
       :root {
-        --bg: #f0f2f5;
-        --surface: #ffffff;
-        --surface2: #f8f9fb;
-        --border: #e0e4ea;
-        --head-bg: #1a3a2a;
-        --head-txt: #ffffff;
-        --text: #1a1d23;
-        --muted: #6b7280;
-        --accent: #1e7e3e;
-        --prog-bg: #fff3e0;
-        --prog-bd: #ff9800;
-        --prog-tx: #e65100;
-        --not-bg: #fce4ec;
-        --not-bd: #e91e63;
-        --not-tx: #880e4f;
-        --done-bg: #e8f5e9;
-        --done-bd: #4caf50;
-        --done-tx: #1b5e20;
-        --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-        --radius: 10px;
+        --bg: #f0f2f5; --surface: #ffffff; --surface2: #f8f9fb;
+        --border: #e0e4ea; --head-bg: #1a3a2a; --head-txt: #ffffff;
+        --text: #1a1d23; --muted: #6b7280; --accent: #1e7e3e;
+        --prog-bg: #fff3e0; --prog-bd: #ff9800; --prog-tx: #e65100;
+        --not-bg: #fce4ec; --not-bd: #e91e63; --not-tx: #880e4f;
+        --done-bg: #e8f5e9; --done-bd: #4caf50; --done-tx: #1b5e20;
+        --shadow: 0 2px 12px rgba(0,0,0,0.08); --radius: 10px;
         --font: "Inter", system-ui, sans-serif;
       }
       [data-theme="dark"] {
-        --bg: #0d1117;
-        --surface: #161b22;
-        --surface2: #1e2530;
-        --border: #2a3140;
-        --head-bg: #0d1117;
-        --head-txt: #e6edf3;
-        --text: #e6edf3;
-        --muted: #7d8590;
-        --accent: #2ea84f;
-        --prog-bg: rgba(255, 152, 0, 0.12);
-        --prog-bd: #ff9800;
-        --prog-tx: #ffb74d;
-        --not-bg: rgba(233, 30, 99, 0.1);
-        --not-bd: #e91e63;
-        --not-tx: #f48fb1;
-        --done-bg: rgba(76, 175, 80, 0.12);
-        --done-bd: #4caf50;
-        --done-tx: #81c784;
-        --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        --bg: #0d1117; --surface: #161b22; --surface2: #1e2530;
+        --border: #2a3140; --head-bg: #0d1117; --head-txt: #e6edf3;
+        --text: #e6edf3; --muted: #7d8590; --accent: #2ea84f;
+        --prog-bg: rgba(255,152,0,0.12); --prog-bd: #ff9800; --prog-tx: #ffb74d;
+        --not-bg: rgba(233,30,99,0.1); --not-bd: #e91e63; --not-tx: #f48fb1;
+        --done-bg: rgba(76,175,80,0.12); --done-bd: #4caf50; --done-tx: #81c784;
+        --shadow: 0 4px 20px rgba(0,0,0,0.4);
       }
+      .header { background:#ffffff !important; border-bottom:3px solid #305ca3 !important; }
+      .header-title { color:#305ca3 !important; }
+      .header-sub { color:#c9a227 !important; }
+      .header-divider { background:#305ca3 !important; opacity:0.25 !important; }
 
-      /* ─── Header always white regardless of theme ────────────────────────── */
-      .header {
-        background: #ffffff !important;
-        border-bottom: 3px solid #305ca3 !important;
-      }
-      .header-title {
-        color: #305ca3 !important;
-      }
-      .header-sub {
-        color: #c9a227 !important;
-      }
-      .header-divider {
-        background: #305ca3 !important;
-        opacity: 0.25 !important;
-      }
+      *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+      body { background:var(--bg); color:var(--text); font-family:var(--font); font-size:14px; line-height:1.5; min-height:100vh; transition:background 0.3s,color 0.3s; }
 
-      /* ─── Reset ──────────────────────────────────────────────────────────── */
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        background: var(--bg);
-        color: var(--text);
-        font-family: var(--font);
-        font-size: 40px;
-        line-height: 1.5;
-        min-height: 100vh;
-        transition:
-          background 0.3s,
-          color 0.3s;
-      }
+      /* Header */
+      .header { background:#ffffff; border-bottom:3px solid #305ca3; padding:0 24px; display:flex; align-items:center; gap:16px; height:68px; position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(48,92,163,0.15); }
+      .header-logo { height:44px; width:auto; }
+      .header-divider { width:1px; height:32px; background:#305ca3; opacity:0.25; flex-shrink:0; }
+      .header-text { flex:1; }
+      .header-title { font-size:16px; font-weight:700; color:#305ca3; line-height:1.2; }
+      .header-sub { font-size:11px; color:#c9a227; margin-top:2px; font-weight:600; letter-spacing:0.03em; }
+      .header-actions { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+      .theme-btn { background:#010101; border:1px solid #264d8a; color:#fff; cursor:pointer; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:600; display:flex; align-items:center; gap:6px; transition:background 0.2s; font-family:var(--font); }
+      .theme-btn:hover { background:#264d8a; }
+      .ecdoe-badge { background:linear-gradient(135deg,#c9a227,#e8c547); color:#fff; font-size:10px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; text-shadow:0 1px 2px rgba(0,0,0,0.2); }
 
-      /* ─── Header ─────────────────────────────────────────────────────────── */
-      .header {
-        background: #ffffff;
-        border-bottom: 3px solid #305ca3;
-        padding: 0 24px;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        height: 68px;
-        position: sticky;
-        top: 0;
-        z-index: 200;
-        box-shadow: 0 2px 12px rgba(48, 92, 163, 0.15);
-      }
-      .header-logo {
-        height: 44px;
-        width: auto;
-      }
-      .header-divider {
-        width: 1px;
-        height: 32px;
-        background: #305ca3;
-        opacity: 0.25;
-        flex-shrink: 0;
-      }
-      .header-text {
-        flex: 1;
-      }
-      .header-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: #305ca3;
-        line-height: 1.2;
-      }
-      .header-sub {
-        font-size: 11px;
-        color: #c9a227;
-        margin-top: 2px;
-        font-weight: 600;
-        letter-spacing: 0.03em;
-      }
-      .header-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-shrink: 0;
-      }
-      .theme-btn {
-        background: #010101;
-        border: 1px solid #264d8a;
-        color: #fff;
-        cursor: pointer;
-        border-radius: 8px;
-        padding: 6px 12px;
-        font-size: 12px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: background 0.2s;
-        font-family: var(--font);
-      }
-      .theme-btn:hover {
-        background: #264d8a;
-      }
-      .ecdoe-badge {
-        background: linear-gradient(135deg, #c9a227, #e8c547);
-        color: #fff;
-        font-size: 10px;
-        font-weight: 700;
-        padding: 4px 12px;
-        border-radius: 20px;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-      }
+      /* KPI */
+      .kpi-section { background:var(--surface2); border-bottom:1px solid var(--border); padding:20px 24px; }
+      .kpi-section-title { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+      .kpi-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+      .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; }
+      .kpi-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; display:flex; align-items:center; gap:14px; box-shadow:0 1px 4px rgba(0,0,0,0.05); transition:transform 0.15s,box-shadow 0.15s; position:relative; overflow:hidden; }
+      .kpi-card:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,0.1); }
+      .kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:10px 10px 0 0; }
+      .kpi-card.total::before { background:#305ca3; }
+      .kpi-card.prog::before  { background:#ff9800; }
+      .kpi-card.not::before   { background:#e91e63; }
+      .kpi-card.done::before  { background:#4caf50; }
+      .kpi-card.updated::before { background:#c9a227; }
+      .kpi-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+      .kpi-card.total .kpi-icon  { background:rgba(48,92,163,0.1); }
+      .kpi-card.prog .kpi-icon   { background:rgba(255,152,0,0.12); }
+      .kpi-card.not .kpi-icon    { background:rgba(233,30,99,0.1); }
+      .kpi-card.done .kpi-icon   { background:rgba(76,175,80,0.12); }
+      .kpi-card.updated .kpi-icon { background:rgba(201,162,39,0.12); }
+      .kpi-info { flex:1; min-width:0; }
+      .kpi-number { font-size:28px; font-weight:800; line-height:1; letter-spacing:-0.03em; }
+      .kpi-card.total .kpi-number  { color:#305ca3; }
+      .kpi-card.prog .kpi-number   { color:#ff9800; }
+      .kpi-card.not .kpi-number    { color:#e91e63; }
+      .kpi-card.done .kpi-number   { color:#4caf50; }
+      .kpi-card.updated .kpi-number { color:#c9a227; font-size:15px; font-weight:700; line-height:1.4; }
+      .kpi-label { font-size:11px; font-weight:600; color:var(--text); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .kpi-sub { font-size:10px; color:var(--muted); margin-top:2px; }
+      .kpi-pill { font-size:9px; font-weight:700; padding:2px 7px; border-radius:20px; margin-top:4px; display:inline-block; letter-spacing:0.04em; }
+      .kpi-card.prog .kpi-pill  { background:rgba(255,152,0,0.15); color:#e65100; }
+      .kpi-card.not .kpi-pill   { background:rgba(233,30,99,0.12); color:#880e4f; }
+      .kpi-card.done .kpi-pill  { background:rgba(76,175,80,0.15); color:#1b5e20; }
+      .kpi-skeleton { background:linear-gradient(90deg,var(--border) 25%,var(--surface2) 50%,var(--border) 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; height:28px; width:50px; }
+      @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+      .data-status-bar { display:flex; align-items:center; gap:8px; margin-top:14px; font-size:11px; color:var(--muted); }
+      .data-dot { width:7px; height:7px; border-radius:50%; background:#4caf50; animation:pulse 2s infinite; }
+      .data-dot.loading { background:#ff9800; animation:none; }
+      .data-dot.error   { background:#e91e63; animation:none; }
+      @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-      /* ─── KPI section ─────────────────────────────────────────────────────── */
-      .kpi-section {
-        background: var(--surface2);
-        border-bottom: 1px solid var(--border);
-        padding: 20px 24px;
-      }
-      .kpi-section-title {
-        font-size: 10px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--muted);
-        margin-bottom: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .kpi-section-title::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-        background: var(--border);
-      }
-      .kpi-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 12px;
-      }
-      .kpi-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 16px;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-        transition: transform 0.15s, box-shadow 0.15s;
-        position: relative;
-        overflow: hidden;
-      }
-      .kpi-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-      }
-      .kpi-card::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 3px;
-        border-radius: 10px 10px 0 0;
-      }
-      .kpi-card.total::before { background: #305ca3; }
-      .kpi-card.prog::before  { background: #ff9800; }
-      .kpi-card.not::before   { background: #e91e63; }
-      .kpi-card.done::before  { background: #4caf50; }
-      .kpi-card.updated::before { background: #c9a227; }
+      /* Controls */
+      .controls { padding:16px 24px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; background:var(--surface2); border-bottom:1px solid var(--border); }
+      .ctrl-label { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; white-space:nowrap; }
+      select { background:var(--surface); border:1px solid var(--border); color:var(--text); font-family:var(--font); font-size:13px; font-weight:500; padding:7px 32px 7px 12px; border-radius:8px; cursor:pointer; outline:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; transition:border-color 0.2s; min-width:160px; }
+      select:focus { border-color:var(--accent); }
+      .search-box { flex:1; min-width:200px; position:relative; }
+      .search-box svg { position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:0.5; pointer-events:none; }
+      .search-box input { width:100%; background:var(--surface); border:1px solid var(--border); color:var(--text); font-family:var(--font); font-size:13px; padding:7px 12px 7px 34px; border-radius:8px; outline:none; transition:border-color 0.2s; }
+      .search-box input:focus { border-color:var(--accent); }
+      .search-box input::placeholder { color:var(--muted); }
+      .result-count { font-size:12px; color:var(--muted); margin-left:auto; white-space:nowrap; }
+      .result-count strong { color:var(--text); }
 
-      .kpi-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        flex-shrink: 0;
-      }
-      .kpi-card.total .kpi-icon  { background: rgba(48,92,163,0.1); }
-      .kpi-card.prog .kpi-icon   { background: rgba(255,152,0,0.12); }
-      .kpi-card.not .kpi-icon    { background: rgba(233,30,99,0.1); }
-      .kpi-card.done .kpi-icon   { background: rgba(76,175,80,0.12); }
-      .kpi-card.updated .kpi-icon { background: rgba(201,162,39,0.12); }
+      /* Grid & status groups */
+      .grid-wrap { padding:24px; }
 
-      .kpi-info { flex: 1; min-width: 0; }
-      .kpi-number {
-        font-size: 28px;
-        font-weight: 800;
-        line-height: 1;
-        letter-spacing: -0.03em;
-      }
-      .kpi-card.total .kpi-number  { color: #305ca3; }
-      .kpi-card.prog .kpi-number   { color: #ff9800; }
-      .kpi-card.not .kpi-number    { color: #e91e63; }
-      .kpi-card.done .kpi-number   { color: #4caf50; }
-      .kpi-card.updated .kpi-number { color: #c9a227; font-size: 15px; font-weight: 700; line-height: 1.4; }
+      .status-group { margin-bottom:32px; }
+      .status-group:last-child { margin-bottom:0; }
 
-      .kpi-label {
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--text);
-        margin-top: 2px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      .group-header {
+        display:flex; align-items:center; gap:12px;
+        margin-bottom:16px;
+        padding-bottom:10px;
+        border-bottom:2px solid var(--border);
       }
-      .kpi-sub {
-        font-size: 14px;
-        color: var(--muted);
-        margin-top: 2px;
+      .group-dot {
+        width:10px; height:10px; border-radius:50%; flex-shrink:0;
       }
-      .kpi-pill {
-        font-size: 12px;
-        font-weight: 700;
-        padding: 2px 7px;
-        border-radius: 20px;
-        margin-top: 4px;
-        display: inline-block;
-        letter-spacing: 0.04em;
-      }
-      .kpi-card.prog .kpi-pill  { background: rgba(255,152,0,0.15); color: #e65100; }
-      .kpi-card.not .kpi-pill   { background: rgba(233,30,99,0.12); color: #880e4f; }
-      .kpi-card.done .kpi-pill  { background: rgba(76,175,80,0.15); color: #1b5e20; }
+      .group-dot.prog  { background:#ff9800; }
+      .group-dot.not   { background:#e91e63; }
+      .group-dot.done  { background:#4caf50; }
 
-      /* loading shimmer */
-      .kpi-skeleton {
-        background: linear-gradient(90deg, var(--border) 25%, var(--surface2) 50%, var(--border) 75%);
-        background-size: 200% 100%;
-        animation: shimmer 1.4s infinite;
-        border-radius: 4px;
-        height: 28px;
-        width: 50px;
+      .group-title {
+        font-size:13px; font-weight:700; text-transform:uppercase;
+        letter-spacing:0.08em; color:var(--text);
       }
-      @keyframes shimmer {
-        0% { background-position: 200% 0; }
-        100% { background-position: -200% 0; }
+      .group-count {
+        font-size:11px; font-weight:600; padding:2px 9px;
+        border-radius:20px; margin-left:4px;
       }
-      .data-status-bar {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 14px;
-        font-size: 11px;
-        color: var(--muted);
-      }
-      .data-dot {
-        width: 7px; height: 7px;
-        border-radius: 50%;
-        background: #4caf50;
-        animation: pulse 2s infinite;
-      }
-      .data-dot.loading { background: #ff9800; animation: none; }
-      .data-dot.error { background: #e91e63; animation: none; }
-      @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-      }
+      .group-count.prog { background:rgba(255,152,0,0.15); color:#e65100; }
+      .group-count.not  { background:rgba(233,30,99,0.12); color:#880e4f; }
+      .group-count.done { background:rgba(76,175,80,0.15); color:#1b5e20; }
 
-      /* ─── Controls ───────────────────────────────────────────────────────── */
-      .controls {
-        padding: 16px 24px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        align-items: center;
-        background: var(--surface2);
-        border-bottom: 1px solid var(--border);
-      }
-      .ctrl-label {
-        font-size: 15px;
-        font-weight: 600;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        white-space: nowrap;
-      }
-      select {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        color: var(--text);
-        font-family: var(--font);
-        font-size: 15px;
-        font-weight: 500;
-        padding: 7px 32px 7px 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        outline: none;
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        transition: border-color 0.2s;
-        min-width: 160px;
-      }
-      select:focus {
-        border-color: var(--accent);
-      }
-      .search-box {
-        flex: 1;
-        min-width: 200px;
-        position: relative;
-      }
-      .search-box svg {
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        opacity: 0.5;
-        pointer-events: none;
-      }
-      .search-box input {
-        width: 30%;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        color: var(--text);
-        font-family: var(--font);
-        font-size: 15px;
-        padding: 12px 12px 12px 34px;
-        border-radius: 8px;
-        outline: none;
-        transition: border-color 0.2s;
-      }
-      .search-box input:focus {
-        border-color: var(--accent);
-      }
-      .search-box input::placeholder {
-        color: var(--muted);
-      }
-      .result-count {
-        font-size: 12px;
-        color: var(--muted);
-        margin-left: auto;
-        white-space: nowrap;
-      }
-      .result-count strong {
-        color: var(--text);
-      }
+      .group-line { flex:1; height:1px; background:var(--border); }
 
-      /* ─── Grid ───────────────────────────────────────────────────────────── */
-      .grid-wrap {
-        padding: 24px;
-      }
-      .proj-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-        gap: 18px;
-      }
+      .proj-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(460px,1fr)); gap:18px; }
 
-      /* ─── Project card ───────────────────────────────────────────────────── */
-      .proj-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        overflow: hidden;
-        box-shadow: var(--shadow);
-        display: flex;
-        flex-direction: column;
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s,
-          border-color 0.2s;
-        animation: fadeUp 0.3s ease both;
-      }
-      .proj-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
-      }
-      .status-prog {
-        border-top: 3px solid #ff9800;
-      }
-      .status-not {
-        border-top: 3px solid #e91e63;
-      }
-      .status-done {
-        border-top: 3px solid #4caf50;
-      }
+      /* Cards */
+      .proj-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column; transition:transform 0.2s,box-shadow 0.2s; animation:fadeUp 0.3s ease both; }
+      .proj-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,0.18); }
+      .status-prog { border-top:3px solid #ff9800; }
+      .status-not  { border-top:3px solid #e91e63; }
+      .status-done { border-top:3px solid #4caf50; }
+      .card-top { padding:16px 16px 12px; }
+      .card-title-row { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:8px; }
+      .card-name { font-size:14px; font-weight:700; color:var(--text); line-height:1.3; flex:1; }
+      .status-badge { font-size:9px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:3px 8px; border-radius:20px; white-space:nowrap; flex-shrink:0; border:1px solid; }
+      .badge-prog { background:var(--prog-bg); color:var(--prog-tx); border-color:var(--prog-bd); }
+      .badge-not  { background:var(--not-bg);  color:var(--not-tx);  border-color:var(--not-bd); }
+      .badge-done { background:var(--done-bg); color:var(--done-tx); border-color:var(--done-bd); }
+      .card-sup { font-size:13px; color:var(--muted); margin-bottom:4px; }
+      .card-team { font-size:13px; color:var(--muted); margin-bottom:6px; line-height:1.4; }
+      .card-team strong { color:var(--text); }
+      .card-dates { display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:6px 10px; margin-top:8px; }
+      .date-lbl { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+      .date-val { font-size:11px; color:var(--text); background:var(--surface); border:1px solid var(--border); padding:2px 7px; border-radius:5px; }
+      .date-sep { color:var(--border); font-size:14px; }
 
-      .card-top {
-        padding: 16px 16px 12px;
-      }
-      .card-title-row {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 8px;
-        margin-bottom: 8px;
-      }
-      .card-name {
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--text);
-        line-height: 1.3;
-        flex: 1;
-      }
-      .status-badge {
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        padding: 3px 8px;
-        border-radius: 20px;
-        white-space: nowrap;
-        flex-shrink: 0;
-        border: 1px solid;
-      }
-      .badge-prog {
-        background: var(--prog-bg);
-        color: var(--prog-tx);
-        border-color: var(--prog-bd);
-      }
-      .badge-not {
-        background: var(--not-bg);
-        color: var(--not-tx);
-        border-color: var(--not-bd);
-      }
-      .badge-done {
-        background: var(--done-bg);
-        color: var(--done-tx);
-        border-color: var(--done-bd);
-      }
+      /* Accordion */
+      .card-accordion { border-top:1px solid var(--border); }
+      .acc-row { border-bottom:1px solid var(--border); }
+      .acc-row:last-child { border-bottom:none; }
+      .acc-head { display:flex; align-items:center; justify-content:space-between; padding:9px 14px; cursor:pointer; user-select:none; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted); transition:background 0.15s,color 0.15s; }
+      .acc-head:hover { background:var(--surface2); color:var(--text); }
+      .acc-icon { transition:transform 0.25s; flex-shrink:0; }
+      .acc-row.open .acc-icon { transform:rotate(180deg); }
+      .acc-row.open .acc-head { color:var(--accent); }
+      .acc-body { display:none; padding:0 14px 12px; }
+      .acc-row.open .acc-body { display:block; }
+      .acc-body p { font-size:13px; color:var(--text); line-height:1.6; }
 
-      .card-sup {
-        font-size: 14px;
-        color: var(#fff);
-        margin-bottom: 4px;
-      }
-      .card-team {
-        font-size: 13px;
-        color: var(--muted);
-        margin-bottom: 6px;
-        line-height: 1.4;
-      }
-      .card-team strong {
-        color: var(--text);
-      }
-      .card-dates {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
-        background: var(--surface2);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 6px 10px;
-        margin-top: 8px;
-      }
-      .date-lbl {
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .date-val {
-        font-size: 12px;
-        color: var(--text);
-        background: var(--surface);
-        border: 1px solid var(--border);
-        padding: 2px 7px;
-        border-radius: 5px;
-      }
-      .date-sep {
-        color: var(--border);
-        font-size: 14px;
-      }
+      /* Empty */
+      .empty-state { text-align:center; padding:40px 20px; color:var(--muted); }
+      .empty-state h3 { color:var(--text); font-size:16px; margin-bottom:6px; }
+      .no-results { grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--muted); }
 
-      /* ─── Accordion ──────────────────────────────────────────────────────── */
-      .card-accordion {
-        border-top: 1px solid var(--border);
-      }
-      .acc-row {
-        border-bottom: 1px solid var(--border);
-      }
-      .acc-row:last-child {
-        border-bottom: none;
-      }
-      .acc-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 9px 14px;
-        cursor: pointer;
-        user-select: none;
-        font-size: 16px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.07em;
-        color: var(--muted);
-        transition:
-          background 0.15s,
-          color 0.15s;
-      }
-      .acc-head:hover {
-        background: var(--surface2);
-        color: var(--text);
-      }
-      .acc-icon {
-        transition: transform 0.25s;
-        flex-shrink: 0;
-      }
-      .acc-row.open .acc-icon {
-        transform: rotate(180deg);
-      }
-      .acc-row.open .acc-head {
-        color: var(--accent);
-      }
-      .acc-body {
-        display: none;
-        padding: 0 14px 12px;
-      }
-      .acc-row.open .acc-body {
-        display: block;
-      }
-      .acc-body p {
-        font-size: 16px;
-        color: var(--text);
-        line-height: 1.6;
-      }
+      /* Footer */
+      .footer { text-align:center; padding:24px; font-size:11px; color:var(--muted); border-top:1px solid var(--border); }
 
-      /* ─── Empty ──────────────────────────────────────────────────────────── */
-      .empty-state {
-        grid-column: 1/-1;
-        text-align: center;
-        padding: 60px 20px;
-        color: var(--muted);
-      }
-      .empty-state h3 {
-        color: var(--text);
-        font-size: 16px;
-        margin-bottom: 6px;
-      }
+      @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 
-      /* ─── Footer ─────────────────────────────────────────────────────────── */
-      .footer {
-        text-align: center;
-        padding: 24px;
-        font-size: 11px;
-        color: var(--muted);
-        border-top: 1px solid var(--border);
-      }
-
-      /* ─── Animation ──────────────────────────────────────────────────────── */
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(12px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* ─── Responsive ─────────────────────────────────────────────────────── */
-      @media (max-width: 600px) {
-        .header {
-          padding: 0 14px;
-          gap: 10px;
-        }
-        .header-title {
-          font-size: 13px;
-        }
-        .ecdoe-badge,
-        .header-sub {
-          display: none;
-        }
-        .controls {
-          padding: 12px 14px;
-        }
-        .grid-wrap {
-          padding: 14px;
-        }
-        .proj-grid {
-          grid-template-columns: 1fr;
-        }
-        .kpi-bar {
-          padding: 12px 14px;
-          gap: 0;
-        }
-        .kpi-item {
-          padding: 0 14px;
-        }
+      @media(max-width:600px){
+        .header{padding:0 14px;gap:10px}
+        .header-title{font-size:13px}
+        .ecdoe-badge,.header-sub{display:none}
+        .controls{padding:12px 14px}
+        .grid-wrap{padding:14px}
+        .proj-grid{grid-template-columns:1fr}
+        .kpi-grid{grid-template-columns:repeat(2,1fr)}
       }
     </style>
   </head>
-  </head>
   <body>
-    <!-- HEADER -->
     <header class="header">
-      <img class="header-logo" src="logo2.png" alt="ECDOE Logo" />
+      <img class="header-logo" src="logo2.png" alt="ECDOE Logo"/>
       <div class="header-divider"></div>
       <div class="header-text">
         <div class="header-title">eLearning Project Tracker</div>
@@ -659,17 +202,24 @@
       </div>
     </header>
 
-    <!-- KPI SECTION -->
+    <!-- KPI -->
     <div class="kpi-section">
       <div class="kpi-section-title">Project Overview</div>
       <div class="kpi-grid" id="kpiGrid">
-        <!-- skeleton cards while loading -->
         <div class="kpi-card total">
           <div class="kpi-icon">📋</div>
           <div class="kpi-info">
             <div class="kpi-skeleton" id="sk-total"></div>
             <div class="kpi-label">Total Projects</div>
             <div class="kpi-sub">All statuses</div>
+          </div>
+        </div>
+        <div class="kpi-card done">
+          <div class="kpi-icon">✅</div>
+          <div class="kpi-info">
+            <div class="kpi-skeleton" id="sk-done"></div>
+            <div class="kpi-label">Completed</div>
+            <div class="kpi-sub" id="sub-done">Loading…</div>
           </div>
         </div>
         <div class="kpi-card prog">
@@ -688,19 +238,11 @@
             <div class="kpi-sub" id="sub-not">Loading…</div>
           </div>
         </div>
-        <div class="kpi-card done">
-          <div class="kpi-icon">✅</div>
-          <div class="kpi-info">
-            <div class="kpi-skeleton" id="sk-done"></div>
-            <div class="kpi-label">Completed</div>
-            <div class="kpi-sub" id="sub-done">Loading…</div>
-          </div>
-        </div>
         <div class="kpi-card updated">
           <div class="kpi-icon">🔄</div>
           <div class="kpi-info">
-            <div class="kpi-skeleton" id="sk-updated" style="width:100px;"></div>
-            <div class="kpi-label">Last Viewd</div>
+            <div class="kpi-skeleton" id="sk-updated" style="width:100px"></div>
+            <div class="kpi-label">Last Refreshed</div>
             <div class="kpi-sub">Live · Google Sheets</div>
           </div>
         </div>
@@ -711,14 +253,14 @@
       </div>
     </div>
 
-    <!-- CONTROLS -->
+    <!-- Controls -->
     <div class="controls">
       <span class="ctrl-label">Filter</span>
       <select id="statusFilter" onchange="applyFilters()">
         <option value="">All Statuses</option>
+        <option value="Completed">Completed</option>
         <option value="In Progress">In Progress</option>
         <option value="Not Started">Not Started</option>
-        <option value="Completed">Completed</option>
       </select>
       <select id="supFilter" onchange="applyFilters()">
         <option value="">All Supervisors</option>
@@ -732,11 +274,9 @@
       <div class="result-count" id="resultCount">Loading…</div>
     </div>
 
-    <!-- CARDS GRID -->
-    <div class="grid-wrap">
-      <div class="proj-grid" id="projGrid">
-        <!-- cards injected by JS -->
-      </div>
+    <!-- Cards -->
+    <div class="grid-wrap" id="gridWrap">
+      <!-- status groups injected by JS -->
     </div>
 
     <footer class="footer">
@@ -745,21 +285,20 @@
     </footer>
 
     <script>
-    // ── Google Sheets public CSV export URL ────────────────────────────────────
-    // Sheet ID from the shared link
     const SHEET_ID = '1WQumvPiJeJnzHhr3JDsJZEcTYt7NG2y2k1-hCeMxuUw';
     const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
-
-    // ── Column map (matches Excel): index 0-based ──────────────────────────────
-    // o | Supervisor | Team Members | Start Date | End Date | Status |
-    // Problem Statement | Current Progress | Challenges | Intervention Needed
     const COL = { name:0, supervisor:1, team:2, start:3, end:4, status:5,
                   problem:6, progress:7, challenges:8, intervention:9 };
 
-    // ── State ──────────────────────────────────────────────────────────────────
+    const STATUS_ORDER = ['Completed', 'In Progress', 'Not Started'];
+    const STATUS_META  = {
+      'Completed':   { cls:'done', dot:'done', icon:'✅', label:'Completed' },
+      'In Progress': { cls:'prog', dot:'prog', icon:'⏳', label:'In Progress' },
+      'Not Started': { cls:'not',  dot:'not',  icon:'🔘', label:'Not Started' },
+    };
+
     let allProjects = [];
 
-    // ── Theme toggle ───────────────────────────────────────────────────────────
     function toggleTheme() {
       const html = document.documentElement;
       const isDark = html.getAttribute('data-theme') === 'dark';
@@ -767,34 +306,27 @@
       document.getElementById('themeBtn').textContent = isDark ? '🌙 Dark' : '☀️ Light';
     }
 
-    // ── Accordion ─────────────────────────────────────────────────────────────
     function toggleAcc(id) {
       document.getElementById(id).classList.toggle('open');
     }
 
-    // ── Parse CSV ─────────────────────────────────────────────────────────────
     function parseCSV(text) {
-      const rows = [];
-      let cur = '', inQ = false, row = [];
+      const rows = []; let cur = '', inQ = false, row = [];
       for (let i = 0; i < text.length; i++) {
         const ch = text[i];
         if (ch === '"') {
-          if (inQ && text[i+1] === '"') { cur += '"'; i++; }
-          else inQ = !inQ;
+          if (inQ && text[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ;
         } else if (ch === ',' && !inQ) {
           row.push(cur.trim()); cur = '';
         } else if ((ch === '\n' || ch === '\r') && !inQ) {
           row.push(cur.trim()); rows.push(row); row = []; cur = '';
           if (ch === '\r' && text[i+1] === '\n') i++;
-        } else {
-          cur += ch;
-        }
+        } else { cur += ch; }
       }
       if (cur || row.length) { row.push(cur.trim()); rows.push(row); }
       return rows;
     }
 
-    // ── Normalise status ───────────────────────────────────────────────────────
     function normStatus(s) {
       if (!s) return 'Not Started';
       const l = s.toLowerCase();
@@ -803,65 +335,46 @@
       return 'Not Started';
     }
 
-    // ── Format date ───────────────────────────────────────────────────────────
     function fmtDate(d) {
       if (!d || d === 'NaT' || d === '') return '—';
-      // Handle "Continuous"
       if (/continuous/i.test(d)) return 'Continuous';
-      // Try parse
       const dt = new Date(d);
       if (isNaN(dt)) return d;
       return dt.toISOString().split('T')[0];
     }
 
-    // ── Build a project card ───────────────────────────────────────────────────
     function buildCard(p, idx) {
-      const statusClass = p.status === 'In Progress' ? 'status-prog'
-                        : p.status === 'Completed'   ? 'status-done' : 'status-not';
-      const badgeClass  = p.status === 'In Progress' ? 'badge-prog'
-                        : p.status === 'Completed'   ? 'badge-done' : 'badge-not';
-      const badgeIcon   = p.status === 'In Progress' ? '⏳'
-                        : p.status === 'Completed'   ? '✅' : '🔘';
-
-      const section = (label, content, rowIdx) => {
-        const id = `card-${idx}-r${rowIdx}`;
+      const m = STATUS_META[p.status];
+      const section = (label, content, ri) => {
+        const id = `card-${idx}-r${ri}`;
         const body = (content && content !== '—')
-          ? content.replace(/\\n/g, '<br>').replace(/\n/g, '<br>')
+          ? content.replace(/\\n/g,'<br>').replace(/\n/g,'<br>')
           : '<em style="color:var(--muted)">None noted.</em>';
-        return `
-          <div class="acc-row" id="${id}">
-            <div class="acc-head" onclick="toggleAcc('${id}')">
-              <span>${label}</span>
-              <svg class="acc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polyline points="6 9 12 15 18 9"/>
-              </svg>
-            </div>
-            <div class="acc-body"><p>${body}</p></div>
-          </div>`;
+        return `<div class="acc-row" id="${id}">
+          <div class="acc-head" onclick="toggleAcc('${id}')">
+            <span>${label}</span>
+            <svg class="acc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="acc-body"><p>${body}</p></div>
+        </div>`;
       };
-
-      const teamHtml = p.team
-        ? `<div class="card-team"><strong>Team:</strong> ${p.team}</div>` : '';
+      const teamHtml  = p.team ? `<div class="card-team"><strong>Team:</strong> ${p.team}</div>` : '';
       const datesHtml = (p.start || p.end)
         ? `<div class="card-dates">
-            <span class="date-lbl">Start:</span><span class="date-val">${fmtDate(p.start)}</span>
-            <span class="date-sep">|</span>
-            <span class="date-lbl">End:</span><span class="date-val">${fmtDate(p.end)}</span>
+             <span class="date-lbl">Start:</span><span class="date-val">${fmtDate(p.start)}</span>
+             <span class="date-sep">|</span>
+             <span class="date-lbl">End:</span><span class="date-val">${fmtDate(p.end)}</span>
            </div>` : '';
-
       return `
-        <div class="proj-card ${statusClass}"
-             data-status="${p.status}"
-             data-supervisor="${p.supervisor || ''}"
-             data-name="${(p.name||'').toLowerCase()}">
+        <div class="proj-card status-${m.cls}"
+             data-status="${p.status}" data-supervisor="${p.supervisor||''}" data-name="${(p.name||'').toLowerCase()}">
           <div class="card-top">
             <div class="card-title-row">
               <h3 class="card-name">${p.name}</h3>
-              <span class="status-badge ${badgeClass}">${badgeIcon} ${p.status.toUpperCase()}</span>
+              <span class="status-badge badge-${m.cls}">${m.icon} ${p.status.toUpperCase()}</span>
             </div>
-            <div class="card-sup">Supervisor: ${p.supervisor || '—'}</div>
-            ${teamHtml}
-            ${datesHtml}
+            <div class="card-sup">Supervisor: ${p.supervisor||'—'}</div>
+            ${teamHtml}${datesHtml}
           </div>
           <div class="card-accordion">
             ${section('Problem Statement', p.problem, 0)}
@@ -872,101 +385,80 @@
         </div>`;
     }
 
-    // ── Render KPIs ───────────────────────────────────────────────────────────
     function renderKPIs(projects) {
       const total = projects.length;
       const prog  = projects.filter(p => p.status === 'In Progress').length;
       const notS  = projects.filter(p => p.status === 'Not Started').length;
       const done  = projects.filter(p => p.status === 'Completed').length;
+      const pct   = n => total ? Math.round(n/total*100)+'%' : '0%';
 
-      const pct = n => total ? Math.round(n / total * 100) + '% of total' : '0%';
-
-      const setNum = (skId, numId, val, pilId) => {
-        const sk = document.getElementById(skId);
-        if (sk) {
-          sk.outerHTML = `<div class="kpi-number" id="${numId}">${val}</div>`;
-        }
-      };
-
-      // Total
-      document.getElementById('sk-total').outerHTML =
-        `<div class="kpi-number" style="color:#305ca3">${total}</div>`;
-
-      // In Progress
-      document.getElementById('sk-prog').outerHTML =
-        `<div class="kpi-number">${prog}</div>`;
-      document.getElementById('sub-prog').innerHTML =
-        `${pct(prog)} &nbsp;<span class="kpi-pill">${pct(prog).replace(' of total','')}</span>`;
-
-      // Not Started
-      document.getElementById('sk-not').outerHTML =
-        `<div class="kpi-number">${notS}</div>`;
-      document.getElementById('sub-not').innerHTML =
-        `${pct(notS)} &nbsp;<span class="kpi-pill">${pct(notS).replace(' of total','')}</span>`;
-
-      // Completed
-      document.getElementById('sk-done').outerHTML =
-        `<div class="kpi-number">${done}</div>`;
-      document.getElementById('sub-done').innerHTML =
-        `${pct(done)} &nbsp;<span class="kpi-pill">${pct(done).replace(' of total','')}</span>`;
-
-      // Last updated
-      const now = new Date();
-      const ts  = now.toLocaleString('en-ZA', {dateStyle:'medium', timeStyle:'short'});
-      document.getElementById('sk-updated').outerHTML =
-        `<div class="kpi-number">${ts}</div>`;
-
-      // Status dot
+      document.getElementById('sk-total').outerHTML = `<div class="kpi-number" style="color:#305ca3">${total}</div>`;
+      document.getElementById('sk-prog').outerHTML  = `<div class="kpi-number">${prog}</div>`;
+      document.getElementById('sk-not').outerHTML   = `<div class="kpi-number">${notS}</div>`;
+      document.getElementById('sk-done').outerHTML  = `<div class="kpi-number">${done}</div>`;
+      document.getElementById('sub-prog').innerHTML = `${pct(prog)} of total &nbsp;<span class="kpi-pill">${pct(prog)}</span>`;
+      document.getElementById('sub-not').innerHTML  = `${pct(notS)} of total &nbsp;<span class="kpi-pill">${pct(notS)}</span>`;
+      document.getElementById('sub-done').innerHTML = `${pct(done)} of total &nbsp;<span class="kpi-pill">${pct(done)}</span>`;
+      const ts = new Date().toLocaleString('en-ZA',{dateStyle:'medium',timeStyle:'short'});
+      document.getElementById('sk-updated').outerHTML = `<div class="kpi-number">${ts}</div>`;
       document.getElementById('dataDot').className = 'data-dot';
-      document.getElementById('dataStatusMsg').textContent =
-        `Live data · ${total} projects loaded from Google Sheets`;
+      document.getElementById('dataStatusMsg').textContent = `Live data · ${total} projects loaded from Google Sheets`;
     }
 
-    // ── Populate supervisor filter ────────────────────────────────────────────
     function populateSupervisorFilter(projects) {
       const sups = [...new Set(projects.map(p => p.supervisor).filter(Boolean))].sort();
       const sel = document.getElementById('supFilter');
-      sups.forEach(s => {
-        const o = document.createElement('option');
-        o.value = s; o.textContent = s;
-        sel.appendChild(o);
+      sups.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+    }
+
+    /* Render grouped layout */
+    function renderGrouped(projects) {
+      const wrap = document.getElementById('gridWrap');
+      const grouped = {};
+      STATUS_ORDER.forEach(s => grouped[s] = []);
+      projects.forEach(p => { if (grouped[p.status]) grouped[p.status].push(p); });
+
+      let html = '';
+      let cardIdx = 0;
+      STATUS_ORDER.forEach(status => {
+        const list = grouped[status];
+        if (list.length === 0) return;
+        const m = STATUS_META[status];
+        const cardsHtml = list.map(p => buildCard(p, cardIdx++)).join('');
+        html += `
+          <div class="status-group" data-group="${status}">
+            <div class="group-header">
+              <div class="group-dot ${m.dot}"></div>
+              <div class="group-title">${m.label}</div>
+              <span class="group-count ${m.dot}">${list.length} project${list.length!==1?'s':''}</span>
+              <div class="group-line"></div>
+            </div>
+            <div class="proj-grid">${cardsHtml}</div>
+          </div>`;
       });
+      wrap.innerHTML = html || '<div class="empty-state"><h3>No projects found</h3></div>';
+      updateCount(projects.length, allProjects.length);
     }
 
-    // ── Render cards ──────────────────────────────────────────────────────────
-    function renderCards(projects) {
-      const grid = document.getElementById('projGrid');
-      grid.innerHTML = projects.map((p, i) => buildCard(p, i)).join('');
-      updateCount(projects.length, projects.length);
-    }
-
-    // ── Apply filters ─────────────────────────────────────────────────────────
     function applyFilters() {
       const status = document.getElementById('statusFilter').value;
       const sup    = document.getElementById('supFilter').value;
       const search = document.getElementById('searchInput').value.toLowerCase().trim();
-      const cards  = document.querySelectorAll('.proj-card');
-      let visible  = 0;
 
-      cards.forEach(c => {
-        const ok =
-          (!status || c.dataset.status === status) &&
-          (!sup    || c.dataset.supervisor === sup) &&
-          (!search || c.textContent.toLowerCase().includes(search));
-        c.style.display = ok ? '' : 'none';
-        if (ok) visible++;
-      });
+      // Re-render grouped with filtered subset
+      const filtered = allProjects.filter(p =>
+        (!status || p.status === status) &&
+        (!sup    || p.supervisor === sup) &&
+        (!search || Object.values(p).join(' ').toLowerCase().includes(search))
+      );
 
-      let empty = document.getElementById('emptyState');
-      if (!empty) {
-        empty = document.createElement('div');
-        empty.id = 'emptyState';
-        empty.className = 'empty-state';
-        empty.innerHTML = '<h3>No projects match your filters</h3><p>Try adjusting the dropdowns or search term.</p>';
-        document.getElementById('projGrid').appendChild(empty);
+      renderGrouped(filtered);
+
+      if (filtered.length === 0) {
+        document.getElementById('gridWrap').innerHTML =
+          `<div class="empty-state"><h3>No projects match your filters</h3><p>Try adjusting the dropdowns or search term.</p></div>`;
+        updateCount(0, allProjects.length);
       }
-      empty.style.display = visible === 0 ? 'block' : 'none';
-      updateCount(visible, allProjects.length);
     }
 
     function updateCount(visible, total) {
@@ -974,15 +466,12 @@
         `Showing <strong>${visible}</strong> of <strong>${total}</strong>`;
     }
 
-    // ── Main: fetch & parse ───────────────────────────────────────────────────
     async function loadData() {
       try {
         const res  = await fetch(CSV_URL);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const text = await res.text();
         const rows = parseCSV(text);
-
-        // First row is header — skip it
         const dataRows = rows.slice(1).filter(r => r[COL.name] && r[COL.name] !== '');
 
         allProjects = dataRows.map(r => ({
@@ -1000,31 +489,22 @@
 
         renderKPIs(allProjects);
         populateSupervisorFilter(allProjects);
-        renderCards(allProjects);
+        renderGrouped(allProjects);
 
       } catch (err) {
         console.error('Failed to load sheet:', err);
         document.getElementById('dataDot').className = 'data-dot error';
         document.getElementById('dataStatusMsg').textContent =
-          `⚠️ Could not load live data. Check sheet sharing settings (must be "Anyone with the link can view").`;
-
-        // Fallback: show error in grid
-        document.getElementById('projGrid').innerHTML = `
-          <div class="empty-state" style="grid-column:1/-1">
-            <h3>Unable to load project data</h3>
-            <p>Make sure the Google Sheet is shared as <strong>"Anyone with the link can view"</strong>,
-            then refresh the page.</p>
-            <p style="margin-top:8px;font-size:11px;color:var(--muted)">${err.message}</p>
-          </div>`;
+          `⚠️ Could not load live data. Make sure the sheet is shared as "Anyone with the link can view".`;
+        document.getElementById('gridWrap').innerHTML =
+          `<div class="empty-state"><h3>Unable to load project data</h3>
+           <p>Make sure the Google Sheet is shared as <strong>"Anyone with the link can view"</strong>, then refresh.</p>
+           <p style="margin-top:8px;font-size:11px;color:var(--muted)">${err.message}</p></div>`;
         document.getElementById('resultCount').textContent = 'No data';
       }
     }
 
-    // ── Init ──────────────────────────────────────────────────────────────────
-    document.getElementById('footerDate').textContent = new Date().toLocaleDateString('en-ZA', {
-      day:'numeric', month:'long', year:'numeric'
-    });
-
+    document.getElementById('footerDate').textContent = new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'});
     loadData();
     </script>
   </body>
