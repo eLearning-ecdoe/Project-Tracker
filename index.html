@@ -1,511 +1,167 @@
 <!doctype html>
 <html lang="en" data-theme="light">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>eLearning Project Tracker — ECDOE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-    <style>
-      :root {
-        --bg: #f0f2f5; --surface: #ffffff; --surface2: #f8f9fb;
-        --border: #e0e4ea; --head-bg: #1a3a2a; --head-txt: #ffffff;
-        --text: #1a1d23; --muted: #6b7280; --accent: #1e7e3e;
-        --prog-bg: #fff3e0; --prog-bd: #ff9800; --prog-tx: #e65100;
-        --not-bg: #fce4ec; --not-bd: #e91e63; --not-tx: #880e4f;
-        --done-bg: #e8f5e9; --done-bd: #4caf50; --done-tx: #1b5e20;
-        --shadow: 0 2px 12px rgba(0,0,0,0.08); --radius: 10px;
-        --font: "Inter", system-ui, sans-serif;
-      }
-      [data-theme="dark"] {
-        --bg: #0d1117; --surface: #161b22; --surface2: #1e2530;
-        --border: #2a3140; --head-bg: #0d1117; --head-txt: #e6edf3;
-        --text: #e6edf3; --muted: #7d8590; --accent: #2ea84f;
-        --prog-bg: rgba(255,152,0,0.12); --prog-bd: #ff9800; --prog-tx: #ffb74d;
-        --not-bg: rgba(233,30,99,0.1); --not-bd: #e91e63; --not-tx: #f48fb1;
-        --done-bg: rgba(76,175,80,0.12); --done-bd: #4caf50; --done-tx: #81c784;
-        --shadow: 0 4px 20px rgba(0,0,0,0.4);
-      }
-      .header { background:#ffffff !important; border-bottom:3px solid #305ca3 !important; }
-      .header-title { color:#305ca3 !important; }
-      .header-sub { color:#c9a227 !important; }
-      .header-divider { background:#305ca3 !important; opacity:0.25 !important; }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ECDOE eLearning Project Tracker</title>
+<meta name="description" content="ECDOE eLearning project capture and dashboard interface">
+<style>
+:root{--blue:#365492;--blue2:#274373;--gold:#F8D449;--bg:#f4f6fa;--surface:#fff;--surface2:#f8fafc;--text:#162033;--muted:#64748b;--border:#dbe2ec;--green:#2e7d32;--orange:#ef8f00;--grey:#7b8495;--red:#c62828;--shadow:0 10px 28px rgba(31,48,82,.10);--radius:16px;--font:Inter,Segoe UI,Arial,sans-serif}
+[data-theme="dark"]{--bg:#0e1523;--surface:#172033;--surface2:#111a2b;--text:#edf2f9;--muted:#a8b3c6;--border:#2b3850;--shadow:0 12px 32px rgba(0,0,0,.35)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px}.hidden{display:none!important}
+button,input,select,textarea{font:inherit}.topbar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:4px solid var(--gold);box-shadow:0 2px 12px rgba(54,84,146,.13);display:flex;align-items:center;gap:14px;padding:11px 22px}.brand-mark{width:46px;height:46px;border-radius:14px;background:linear-gradient(145deg,var(--blue),var(--blue2));color:#fff;display:grid;place-items:center;font-weight:800;border:3px solid var(--gold)}.brand{flex:1}.brand h1{font-size:17px;color:var(--blue);margin:0}.brand p{font-size:11px;color:#9a7d00;font-weight:700;margin:2px 0 0}.top-actions{display:flex;gap:8px;align-items:center}.btn{border:0;border-radius:10px;padding:10px 15px;font-weight:700;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--blue);color:#fff}.btn-gold{background:var(--gold);color:#1f2937}.btn-soft{background:var(--surface2);color:var(--text);border:1px solid var(--border)}.btn-danger{background:#fff1f1;color:var(--red);border:1px solid #f2bcbc}.container{width:min(1450px,100%);margin:auto;padding:24px}.view{animation:fade .22s ease}@keyframes fade{from{opacity:.3;transform:translateY(5px)}to{opacity:1;transform:none}}
+.hero{background:linear-gradient(135deg,var(--blue),#496bab);border-radius:24px;color:#fff;padding:42px;position:relative;overflow:hidden;box-shadow:var(--shadow)}.hero:after{content:"";position:absolute;width:280px;height:280px;border-radius:50%;background:rgba(248,212,73,.2);right:-85px;top:-105px}.hero h2{font-size:34px;margin:0 0 10px;max-width:760px}.hero p{font-size:16px;max-width:800px;opacity:.9}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:24px}.choice-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:var(--shadow);cursor:pointer;transition:.2s}.choice-card:hover{transform:translateY(-4px);border-color:var(--blue)}.choice-icon{font-size:32px}.choice-card h3{font-size:21px;margin:14px 0 6px}.choice-card p{color:var(--muted);margin:0 0 18px}.notice{margin-top:18px;padding:14px 16px;border-radius:12px;background:#fff8d8;border:1px solid #ecd26b;color:#5e4d00}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}.section-head h2{margin:0;font-size:25px}.section-head p{margin:5px 0 0;color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}.capture-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}.mode-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}.wizard{display:grid;grid-template-columns:230px 1fr;gap:22px}.steps{display:flex;flex-direction:column;gap:8px}.step{padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--surface2);color:var(--muted);font-weight:700}.step.active{background:rgba(54,84,146,.11);border-color:var(--blue);color:var(--blue)}.step.done{border-left:4px solid var(--green)}.form-section{display:none}.form-section.active{display:block}.form-section h3{margin:0 0 16px;font-size:19px;color:var(--blue)}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.field.full{grid-column:1/-1}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}.req{color:var(--red)}.field input,.field select,.field textarea{width:100%;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:11px 12px;outline:none}.field textarea{min-height:105px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(54,84,146,.12)}.field input[readonly],.field input:disabled{background:var(--surface2);color:var(--muted)}.hint{font-size:11px;color:var(--muted);margin-top:5px}.check-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.check-item{display:flex;gap:9px;align-items:flex-start;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface2)}.check-item input{width:auto;margin-top:3px}.radio-line{display:flex;gap:18px;flex-wrap:wrap}.radio-line label{display:flex;align-items:center;gap:7px}.wizard-nav{display:flex;justify-content:space-between;margin-top:22px;border-top:1px solid var(--border);padding-top:16px}.validation{color:var(--red);font-size:12px;margin-top:10px}.success-box{padding:14px;background:#e9f6eb;border:1px solid #8bc995;color:#205b27;border-radius:12px;margin-bottom:15px}.error-box{padding:14px;background:#fff0f0;border:1px solid #e9aaaa;color:#8f1d1d;border-radius:12px;margin-bottom:15px}
+.kpis{display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));gap:12px;margin-bottom:18px}.kpi{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:15px;box-shadow:0 3px 12px rgba(30,45,80,.06);border-top:4px solid var(--blue)}.kpi.done{border-top-color:var(--green)}.kpi.progress{border-top-color:var(--orange)}.kpi.not{border-top-color:var(--grey)}.kpi.overdue{border-top-color:var(--red)}.kpi.gold{border-top-color:var(--gold)}.kpi .number{font-size:25px;font-weight:850}.kpi .label{font-size:11px;color:var(--muted);font-weight:700;margin-top:3px}.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:8px;margin-bottom:14px}.tab{white-space:nowrap;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:10px 14px;border-radius:10px;font-weight:750;cursor:pointer}.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}.filters{display:grid;grid-template-columns:1fr 180px 180px 180px auto;gap:10px;margin-bottom:20px}.filters input,.filters select{width:100%;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text)}.status-section{margin-bottom:28px}.status-heading{display:flex;align-items:center;gap:10px;margin-bottom:12px}.status-heading h3{margin:0;font-size:14px;text-transform:uppercase;letter-spacing:.07em}.dot{width:10px;height:10px;border-radius:50%}.dot.not{background:var(--grey)}.dot.progress{background:var(--orange)}.dot.done{background:var(--green)}.count{font-size:11px;background:var(--surface2);border:1px solid var(--border);padding:2px 8px;border-radius:20px}.projects{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:15px}.project{background:var(--surface);border:1px solid var(--border);border-radius:15px;box-shadow:0 5px 16px rgba(29,44,78,.07);overflow:hidden;border-top:4px solid var(--grey)}.project.progress{border-top-color:var(--orange)}.project.done{border-top-color:var(--green)}.project-head{padding:16px}.project-id{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.07em}.project h4{font-size:16px;margin:5px 0 8px}.badges{display:flex;flex-wrap:wrap;gap:6px}.badge{font-size:10px;font-weight:800;border-radius:20px;padding:4px 8px;background:var(--surface2);border:1px solid var(--border)}.badge.high{background:#ffebee;color:#b71c1c}.badge.medium{background:#fff8e1;color:#8b6200}.badge.low{background:#e8f5e9;color:#236428}.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px;font-size:11px;color:var(--muted)}.meta strong{display:block;color:var(--text);font-size:12px}.progressbar{height:7px;background:var(--border);border-radius:10px;overflow:hidden;margin-top:12px}.progressbar span{display:block;height:100%;background:var(--blue)}.project-details{border-top:1px solid var(--border)}details{padding:10px 15px;border-bottom:1px solid var(--border)}details:last-child{border-bottom:0}summary{font-size:11px;font-weight:800;cursor:pointer;color:var(--muted)}details p{font-size:12px;white-space:pre-wrap;line-height:1.55}.empty{text-align:center;padding:35px;color:var(--muted);border:1px dashed var(--border);border-radius:12px}.loading{padding:35px;text-align:center;color:var(--muted)}.footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}.backend-status{font-size:11px;padding:5px 9px;border-radius:20px;border:1px solid var(--border);background:var(--surface2)}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(4,1fr)}.filters{grid-template-columns:1fr 1fr 1fr}.wizard{grid-template-columns:1fr}.steps{flex-direction:row;overflow:auto}.step{min-width:155px}}
+@media(max-width:700px){.container{padding:14px}.topbar{padding:9px 12px}.brand p{display:none}.hero{padding:27px 22px}.hero h2{font-size:27px}.choice-grid,.form-grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.projects{grid-template-columns:1fr}.top-actions .label{display:none}.check-grid{grid-template-columns:1fr}.panel{padding:16px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand-mark">EC</div>
+  <div class="brand"><h1>eLearning Project Management System</h1><p>Eastern Cape Department of Education — e-Learning Directorate</p></div>
+  <div class="top-actions">
+    <span class="backend-status" id="backendStatus">Checking data…</span>
+    <button class="btn btn-soft" id="homeBtn" onclick="showView('landing')">⌂ <span class="label">Home</span></button>
+    <button class="btn btn-soft" onclick="toggleTheme()" id="themeBtn">🌙 <span class="label">Dark</span></button>
+  </div>
+</header>
+<main class="container">
+<section id="landingView" class="view">
+  <div class="hero"><h2>Welcome to the eLearning Project Tracker</h2><p>Capture new projects, update existing work and monitor delivery across all five eLearning pillars from one departmental interface.</p></div>
+  <div class="choice-grid">
+    <article class="choice-card" onclick="openCapture('add')"><div class="choice-icon">✍️</div><h3>Capture or update projects</h3><p>Add a new project or update progress, risks, milestones, expenditure and revised timelines.</p><button class="btn btn-primary">Open capture interface</button></article>
+    <article class="choice-card" onclick="showView('dashboard')"><div class="choice-icon">📊</div><h3>View project dashboard</h3><p>Review projects by pillar and status, search records, track budgets and identify overdue work.</p><button class="btn btn-gold">View projects</button></article>
+  </div>
+  <div class="notice"><strong>Google Sheets connection:</strong> dashboard reading works when the spreadsheet is shared for viewing. Saving from GitHub Pages requires a deployed Google Apps Script Web App URL in the CONFIG section near the bottom of this file.</div>
+</section>
 
-      *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-      body { background:var(--bg); color:var(--text); font-family:var(--font); font-size:14px; line-height:1.5; min-height:100vh; transition:background 0.3s,color 0.3s; }
-
-      /* Header */
-      .header { background:#ffffff; border-bottom:3px solid #305ca3; padding:0 24px; display:flex; align-items:center; gap:16px; height:68px; position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(48,92,163,0.15); }
-      .header-logo { height:44px; width:auto; }
-      .header-divider { width:1px; height:32px; background:#305ca3; opacity:0.25; flex-shrink:0; }
-      .header-text { flex:1; }
-      .header-title { font-size:16px; font-weight:700; color:#305ca3; line-height:1.2; }
-      .header-sub { font-size:11px; color:#c9a227; margin-top:2px; font-weight:600; letter-spacing:0.03em; }
-      .header-actions { display:flex; align-items:center; gap:10px; flex-shrink:0; }
-      .theme-btn { background:#010101; border:1px solid #264d8a; color:#fff; cursor:pointer; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:600; display:flex; align-items:center; gap:6px; transition:background 0.2s; font-family:var(--font); }
-      .theme-btn:hover { background:#264d8a; }
-      .ecdoe-badge { background:linear-gradient(135deg,#c9a227,#e8c547); color:#fff; font-size:10px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; text-transform:uppercase; text-shadow:0 1px 2px rgba(0,0,0,0.2); }
-
-      /* KPI */
-      .kpi-section { background:var(--surface2); border-bottom:1px solid var(--border); padding:20px 24px; }
-      .kpi-section-title { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
-      .kpi-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
-      .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; }
-      .kpi-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; display:flex; align-items:center; gap:14px; box-shadow:0 1px 4px rgba(0,0,0,0.05); transition:transform 0.15s,box-shadow 0.15s; position:relative; overflow:hidden; }
-      .kpi-card:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,0.1); }
-      .kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:10px 10px 0 0; }
-      .kpi-card.total::before { background:#305ca3; }
-      .kpi-card.prog::before  { background:#ff9800; }
-      .kpi-card.not::before   { background:#e91e63; }
-      .kpi-card.done::before  { background:#4caf50; }
-      .kpi-card.updated::before { background:#c9a227; }
-      .kpi-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
-      .kpi-card.total .kpi-icon  { background:rgba(48,92,163,0.1); }
-      .kpi-card.prog .kpi-icon   { background:rgba(255,152,0,0.12); }
-      .kpi-card.not .kpi-icon    { background:rgba(233,30,99,0.1); }
-      .kpi-card.done .kpi-icon   { background:rgba(76,175,80,0.12); }
-      .kpi-card.updated .kpi-icon { background:rgba(201,162,39,0.12); }
-      .kpi-info { flex:1; min-width:0; }
-      .kpi-number { font-size:28px; font-weight:800; line-height:1; letter-spacing:-0.03em; }
-      .kpi-card.total .kpi-number  { color:#305ca3; }
-      .kpi-card.prog .kpi-number   { color:#ff9800; }
-      .kpi-card.not .kpi-number    { color:#e91e63; }
-      .kpi-card.done .kpi-number   { color:#4caf50; }
-      .kpi-card.updated .kpi-number { color:#c9a227; font-size:15px; font-weight:700; line-height:1.4; }
-      .kpi-label { font-size:11px; font-weight:600; color:var(--text); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-      .kpi-sub { font-size:10px; color:var(--muted); margin-top:2px; }
-      .kpi-pill { font-size:9px; font-weight:700; padding:2px 7px; border-radius:20px; margin-top:4px; display:inline-block; letter-spacing:0.04em; }
-      .kpi-card.prog .kpi-pill  { background:rgba(255,152,0,0.15); color:#e65100; }
-      .kpi-card.not .kpi-pill   { background:rgba(233,30,99,0.12); color:#880e4f; }
-      .kpi-card.done .kpi-pill  { background:rgba(76,175,80,0.15); color:#1b5e20; }
-      .kpi-skeleton { background:linear-gradient(90deg,var(--border) 25%,var(--surface2) 50%,var(--border) 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; height:28px; width:50px; }
-      @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-      .data-status-bar { display:flex; align-items:center; gap:8px; margin-top:14px; font-size:11px; color:var(--muted); }
-      .data-dot { width:7px; height:7px; border-radius:50%; background:#4caf50; animation:pulse 2s infinite; }
-      .data-dot.loading { background:#ff9800; animation:none; }
-      .data-dot.error   { background:#e91e63; animation:none; }
-      @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-      /* Controls */
-      .controls { padding:16px 24px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; background:var(--surface2); border-bottom:1px solid var(--border); }
-      .ctrl-label { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; white-space:nowrap; }
-      select { background:var(--surface); border:1px solid var(--border); color:var(--text); font-family:var(--font); font-size:13px; font-weight:500; padding:7px 32px 7px 12px; border-radius:8px; cursor:pointer; outline:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; transition:border-color 0.2s; min-width:160px; }
-      select:focus { border-color:var(--accent); }
-      .search-box { flex:1; min-width:200px; position:relative; }
-      .search-box svg { position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:0.5; pointer-events:none; }
-      .search-box input { width:100%; background:var(--surface); border:1px solid var(--border); color:var(--text); font-family:var(--font); font-size:13px; padding:7px 12px 7px 34px; border-radius:8px; outline:none; transition:border-color 0.2s; }
-      .search-box input:focus { border-color:var(--accent); }
-      .search-box input::placeholder { color:var(--muted); }
-      .result-count { font-size:12px; color:var(--muted); margin-left:auto; white-space:nowrap; }
-      .result-count strong { color:var(--text); }
-
-      /* Grid & status groups */
-      .grid-wrap { padding:24px; }
-
-      .status-group { margin-bottom:32px; }
-      .status-group:last-child { margin-bottom:0; }
-
-      .group-header {
-        display:flex; align-items:center; gap:12px;
-        margin-bottom:16px;
-        padding-bottom:10px;
-        border-bottom:2px solid var(--border);
-      }
-      .group-dot {
-        width:10px; height:10px; border-radius:50%; flex-shrink:0;
-      }
-      .group-dot.prog  { background:#ff9800; }
-      .group-dot.not   { background:#e91e63; }
-      .group-dot.done  { background:#4caf50; }
-
-      .group-title {
-        font-size:13px; font-weight:700; text-transform:uppercase;
-        letter-spacing:0.08em; color:var(--text);
-      }
-      .group-count {
-        font-size:11px; font-weight:600; padding:2px 9px;
-        border-radius:20px; margin-left:4px;
-      }
-      .group-count.prog { background:rgba(255,152,0,0.15); color:#e65100; }
-      .group-count.not  { background:rgba(233,30,99,0.12); color:#880e4f; }
-      .group-count.done { background:rgba(76,175,80,0.15); color:#1b5e20; }
-
-      .group-line { flex:1; height:1px; background:var(--border); }
-
-      .proj-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(460px,1fr)); gap:18px; }
-
-      /* Cards */
-      .proj-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column; transition:transform 0.2s,box-shadow 0.2s; animation:fadeUp 0.3s ease both; }
-      .proj-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,0.18); }
-      .status-prog { border-top:3px solid #ff9800; }
-      .status-not  { border-top:3px solid #e91e63; }
-      .status-done { border-top:3px solid #4caf50; }
-      .card-top { padding:16px 16px 12px; }
-      .card-title-row { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:8px; }
-      .card-name { font-size:14px; font-weight:700; color:var(--text); line-height:1.3; flex:1; }
-      .status-badge { font-size:9px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:3px 8px; border-radius:20px; white-space:nowrap; flex-shrink:0; border:1px solid; }
-      .badge-prog { background:var(--prog-bg); color:var(--prog-tx); border-color:var(--prog-bd); }
-      .badge-not  { background:var(--not-bg);  color:var(--not-tx);  border-color:var(--not-bd); }
-      .badge-done { background:var(--done-bg); color:var(--done-tx); border-color:var(--done-bd); }
-      .card-sup { font-size:13px; color:var(--muted); margin-bottom:4px; }
-      .card-team { font-size:13px; color:var(--muted); margin-bottom:6px; line-height:1.4; }
-      .card-team strong { color:var(--text); }
-      .card-dates { display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:6px 10px; margin-top:8px; }
-      .date-lbl { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
-      .date-val { font-size:11px; color:var(--text); background:var(--surface); border:1px solid var(--border); padding:2px 7px; border-radius:5px; }
-      .date-sep { color:var(--border); font-size:14px; }
-
-      /* Accordion */
-      .card-accordion { border-top:1px solid var(--border); }
-      .acc-row { border-bottom:1px solid var(--border); }
-      .acc-row:last-child { border-bottom:none; }
-      .acc-head { display:flex; align-items:center; justify-content:space-between; padding:9px 14px; cursor:pointer; user-select:none; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted); transition:background 0.15s,color 0.15s; }
-      .acc-head:hover { background:var(--surface2); color:var(--text); }
-      .acc-icon { transition:transform 0.25s; flex-shrink:0; }
-      .acc-row.open .acc-icon { transform:rotate(180deg); }
-      .acc-row.open .acc-head { color:var(--accent); }
-      .acc-body { display:none; padding:0 14px 12px; }
-      .acc-row.open .acc-body { display:block; }
-      .acc-body p { font-size:13px; color:var(--text); line-height:1.6; }
-
-      /* Empty */
-      .empty-state { text-align:center; padding:40px 20px; color:var(--muted); }
-      .empty-state h3 { color:var(--text); font-size:16px; margin-bottom:6px; }
-      .no-results { grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--muted); }
-
-      /* Footer */
-      .footer { text-align:center; padding:24px; font-size:11px; color:var(--muted); border-top:1px solid var(--border); }
-
-      @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-
-      @media(max-width:600px){
-        .header{padding:0 14px;gap:10px}
-        .header-title{font-size:13px}
-        .ecdoe-badge,.header-sub{display:none}
-        .controls{padding:12px 14px}
-        .grid-wrap{padding:14px}
-        .proj-grid{grid-template-columns:1fr}
-        .kpi-grid{grid-template-columns:repeat(2,1fr)}
-      }
-    </style>
-  </head>
-  <body>
-    <header class="header">
-      <img class="header-logo" src="logo2.png" alt="ECDOE Logo"/>
-      <div class="header-divider"></div>
-      <div class="header-text">
-        <div class="header-title">eLearning Project Tracker</div>
-        <div class="header-sub">Eastern Cape Department of Education — e-Learning Directorate</div>
-      </div>
-      <div class="header-actions">
-        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 Dark</button>
-        <span class="ecdoe-badge">ECDOE</span>
-      </div>
-    </header>
-
-    <!-- KPI -->
-    <div class="kpi-section">
-      <div class="kpi-section-title">Project Overview</div>
-      <div class="kpi-grid" id="kpiGrid">
-        <div class="kpi-card total">
-          <div class="kpi-icon">📋</div>
-          <div class="kpi-info">
-            <div class="kpi-skeleton" id="sk-total"></div>
-            <div class="kpi-label">Total Projects</div>
-            <div class="kpi-sub">All statuses</div>
-          </div>
-        </div>
-        <div class="kpi-card done">
-          <div class="kpi-icon">✅</div>
-          <div class="kpi-info">
-            <div class="kpi-skeleton" id="sk-done"></div>
-            <div class="kpi-label">Completed</div>
-            <div class="kpi-sub" id="sub-done">Loading…</div>
-          </div>
-        </div>
-        <div class="kpi-card prog">
-          <div class="kpi-icon">⏳</div>
-          <div class="kpi-info">
-            <div class="kpi-skeleton" id="sk-prog"></div>
-            <div class="kpi-label">In Progress</div>
-            <div class="kpi-sub" id="sub-prog">Loading…</div>
-          </div>
-        </div>
-        <div class="kpi-card not">
-          <div class="kpi-icon">🔘</div>
-          <div class="kpi-info">
-            <div class="kpi-skeleton" id="sk-not"></div>
-            <div class="kpi-label">Not Started</div>
-            <div class="kpi-sub" id="sub-not">Loading…</div>
-          </div>
-        </div>
-        <div class="kpi-card updated">
-          <div class="kpi-icon">🔄</div>
-          <div class="kpi-info">
-            <div class="kpi-skeleton" id="sk-updated" style="width:100px"></div>
-            <div class="kpi-label">Last Refreshed</div>
-            <div class="kpi-sub">Live · Google Sheets</div>
-          </div>
+<section id="captureView" class="view hidden">
+  <div class="section-head"><div><h2>Project capture</h2><p id="captureSubtitle">Add a new eLearning project.</p></div><button class="btn btn-soft" onclick="showView('dashboard')">View dashboard</button></div>
+  <div id="formMessage"></div>
+  <div class="capture-actions">
+    <button class="btn btn-soft mode-btn active" id="addModeBtn" onclick="setCaptureMode('add')">＋ Add new project</button>
+    <button class="btn btn-soft mode-btn" id="updateModeBtn" onclick="setCaptureMode('update')">↻ Update existing project</button>
+  </div>
+  <div class="panel">
+    <div id="updateSelector" class="field full hidden" style="margin-bottom:18px"><label>Select project to update <span class="req">*</span></label><select id="existingProject" onchange="loadExistingProject(this.value)"><option value="">Select a project…</option></select><div class="hint">Start Date and Planned End Date are locked for existing projects.</div></div>
+    <form id="projectForm" novalidate>
+      <div class="wizard">
+        <aside class="steps" id="steps"></aside>
+        <div>
+          <section class="form-section active" data-step="0"><h3>1. Project information</h3><div class="form-grid">
+            <div class="field"><label>Project ID</label><input id="projectId" name="ProjectID" readonly></div>
+            <div class="field"><label>Pillar <span class="req">*</span></label><select id="pillar" name="Pillar" required><option value="">Select pillar…</option><option>LMS</option><option>eTechnology</option><option>eContent & Broadcast</option><option>Professional Development</option><option>Special projects</option></select></div>
+            <div class="field full"><label>Project Name <span class="req">*</span></label><input id="projectName" name="Project Name" required maxlength="150"></div>
+            <div class="field full"><label>Project Description <span class="req">*</span></label><textarea id="projectDescription" name="Project Description" required></textarea></div>
+            <div class="field"><label>Client Details</label><input id="clientDetails" name="Client Details"></div>
+            <div class="field"><label>Priority <span class="req">*</span></label><select id="priority" name="Priority" required><option value="">Select priority…</option><option>High</option><option>Medium</option><option>Low</option></select></div>
+          </div></section>
+          <section class="form-section" data-step="1"><h3>2. Ownership and accountability</h3><div class="form-grid">
+            <div class="field full"><label>Project Manager / Supervisor <span class="req">*</span></label><div class="check-grid" id="managerChecks"></div><div class="hint">One supervisor is required.</div></div>
+            <div class="field full"><label>Team Members <span class="req">*</span></label><div class="check-grid" id="teamChecks"></div></div>
+            <div class="field full"><label>Updated By <span class="req">*</span></label><select id="updatedBy" name="Updated By" required><option value="">Select your name…</option></select><div class="hint">Loaded from the eLearning_Team sheet.</div></div>
+          </div></section>
+          <section class="form-section" data-step="2"><h3>3. Need, outcomes and schedule</h3><div class="form-grid">
+            <div class="field full"><label>Problem Statement <span class="req">*</span></label><textarea id="problemStatement" name="Problem Statement" required></textarea></div>
+            <div class="field full"><label>Expected Outcome <span class="req">*</span></label><textarea id="expectedOutcome" name="Expected Outcome" required></textarea></div>
+            <div class="field"><label>Start Date <span class="req">*</span></label><input type="date" id="startDate" name="Start Date" required onchange="calculateDuration()"></div>
+            <div class="field"><label>Planned End Date <span class="req">*</span></label><input type="date" id="plannedEndDate" name="Planned End Date" required onchange="calculateDuration()"></div>
+            <div class="field"><label>Revised End Date</label><input type="date" id="revisedEndDate" name="Revised End Date" onchange="calculateDuration()"></div>
+            <div class="field"><label>Duration (Days)</label><input type="number" id="durationDays" name="Duration (Days)" readonly></div>
+          </div></section>
+          <section class="form-section" data-step="3"><h3>4. Progress and delivery</h3><div class="form-grid">
+            <div class="field"><label>Status <span class="req">*</span></label><select id="status" name="Status" required><option value="">Select status…</option><option>Not Started</option><option>In Progress</option><option>Completed</option></select></div>
+            <div class="field"><label>Current Phase <span class="req">*</span></label><select id="currentPhase" name="Current Phase" required><option value="">Select phase…</option><option>Planning Phase</option><option>Development Phase</option><option>Testing Phase</option><option>Deployment Phase</option></select></div>
+            <div class="field full"><label>Current Progress</label><textarea id="currentProgress" name="Current Progress"></textarea></div>
+            <div class="field full"><label>Milestones</label><textarea id="milestones" name="Milestones"></textarea></div>
+          </div></section>
+          <section class="form-section" data-step="4"><h3>5. Risks, escalation and finance</h3><div class="form-grid">
+            <div class="field full"><label>Challenges</label><textarea id="challenges" name="Challenges"></textarea></div>
+            <div class="field full"><label>Escalation Required <span class="req">*</span></label><div class="radio-line"><label><input type="radio" name="Escalation Required" value="Yes" onchange="toggleIntervention(true)"> Yes</label><label><input type="radio" name="Escalation Required" value="No" onchange="toggleIntervention(false)"> No</label></div></div>
+            <div class="field full hidden" id="interventionField"><label>Intervention Needed <span class="req">*</span></label><textarea id="interventionNeeded" name="Intervention needed"></textarea></div>
+            <div class="field"><label>Budget (R)</label><input type="number" min="0" step="0.01" id="budget" name="Budget"></div>
+            <div class="field"><label>Budget Spent (R)</label><input type="number" min="0" step="0.01" id="budgetSpent" name="Budget Spent"></div>
+            <div class="field full"><label>Comments</label><textarea id="comments" name="Comments"></textarea></div>
+            <input type="hidden" id="dateUpdated" name="Date Updated">
+          </div></section>
+          <div class="validation" id="validationMsg"></div>
+          <div class="wizard-nav"><button type="button" class="btn btn-soft" id="prevBtn" onclick="changeStep(-1)">← Previous</button><div><button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Next →</button><button type="submit" class="btn btn-gold hidden" id="submitBtn">Save project</button></div></div>
         </div>
       </div>
-      <div class="data-status-bar">
-        <div class="data-dot loading" id="dataDot"></div>
-        <span id="dataStatusMsg">Connecting to Google Sheets…</span>
-      </div>
-    </div>
+    </form>
+  </div>
+</section>
 
-    <!-- Controls -->
-    <div class="controls">
-      <span class="ctrl-label">Filter</span>
-      <select id="statusFilter" onchange="applyFilters()">
-        <option value="">All Statuses</option>
-        <option value="Completed">Completed</option>
-        <option value="In Progress">In Progress</option>
-        <option value="Not Started">Not Started</option>
-      </select>
-      <select id="supFilter" onchange="applyFilters()">
-        <option value="">All Supervisors</option>
-      </select>
-      <div class="search-box">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-        </svg>
-        <input type="text" id="searchInput" placeholder="Search projects, supervisors…" oninput="applyFilters()"/>
-      </div>
-      <div class="result-count" id="resultCount">Loading…</div>
-    </div>
-
-    <!-- Cards -->
-    <div class="grid-wrap" id="gridWrap">
-      <!-- status groups injected by JS -->
-    </div>
-
-    <footer class="footer">
-      eLearning Project Tracker &nbsp;•&nbsp; Eastern Cape Department of Education
-      &nbsp;•&nbsp; Live from Google Sheets &nbsp;•&nbsp; <span id="footerDate"></span>
-    </footer>
-
-    <script>
-    const SHEET_ID = '1WQumvPiJeJnzHhr3JDsJZEcTYt7NG2y2k1-hCeMxuUw';
-    const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
-    const COL = { name:0, supervisor:1, team:2, start:3, end:4, status:5,
-                  problem:6, progress:7, challenges:8, intervention:9 };
-
-    const STATUS_ORDER = ['Completed', 'In Progress', 'Not Started'];
-    const STATUS_META  = {
-      'Completed':   { cls:'done', dot:'done', icon:'✅', label:'Completed' },
-      'In Progress': { cls:'prog', dot:'prog', icon:'⏳', label:'In Progress' },
-      'Not Started': { cls:'not',  dot:'not',  icon:'🔘', label:'Not Started' },
-    };
-
-    let allProjects = [];
-
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      document.getElementById('themeBtn').textContent = isDark ? '🌙 Dark' : '☀️ Light';
-    }
-
-    function toggleAcc(id) {
-      document.getElementById(id).classList.toggle('open');
-    }
-
-    function parseCSV(text) {
-      const rows = []; let cur = '', inQ = false, row = [];
-      for (let i = 0; i < text.length; i++) {
-        const ch = text[i];
-        if (ch === '"') {
-          if (inQ && text[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ;
-        } else if (ch === ',' && !inQ) {
-          row.push(cur.trim()); cur = '';
-        } else if ((ch === '\n' || ch === '\r') && !inQ) {
-          row.push(cur.trim()); rows.push(row); row = []; cur = '';
-          if (ch === '\r' && text[i+1] === '\n') i++;
-        } else { cur += ch; }
-      }
-      if (cur || row.length) { row.push(cur.trim()); rows.push(row); }
-      return rows;
-    }
-
-    function normStatus(s) {
-      if (!s) return 'Not Started';
-      const l = s.toLowerCase();
-      if (l.includes('progress')) return 'In Progress';
-      if (l.includes('complete') || l.includes('done')) return 'Completed';
-      return 'Not Started';
-    }
-
-    function fmtDate(d) {
-      if (!d || d === 'NaT' || d === '') return '—';
-      if (/continuous/i.test(d)) return 'Continuous';
-      const dt = new Date(d);
-      if (isNaN(dt)) return d;
-      return dt.toISOString().split('T')[0];
-    }
-
-    function buildCard(p, idx) {
-      const m = STATUS_META[p.status];
-      const section = (label, content, ri) => {
-        const id = `card-${idx}-r${ri}`;
-        const body = (content && content !== '—')
-          ? content.replace(/\\n/g,'<br>').replace(/\n/g,'<br>')
-          : '<em style="color:var(--muted)">None noted.</em>';
-        return `<div class="acc-row" id="${id}">
-          <div class="acc-head" onclick="toggleAcc('${id}')">
-            <span>${label}</span>
-            <svg class="acc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-          </div>
-          <div class="acc-body"><p>${body}</p></div>
-        </div>`;
-      };
-      const teamHtml  = p.team ? `<div class="card-team"><strong>Team:</strong> ${p.team}</div>` : '';
-      const datesHtml = (p.start || p.end)
-        ? `<div class="card-dates">
-             <span class="date-lbl">Start:</span><span class="date-val">${fmtDate(p.start)}</span>
-             <span class="date-sep">|</span>
-             <span class="date-lbl">End:</span><span class="date-val">${fmtDate(p.end)}</span>
-           </div>` : '';
-      return `
-        <div class="proj-card status-${m.cls}"
-             data-status="${p.status}" data-supervisor="${p.supervisor||''}" data-name="${(p.name||'').toLowerCase()}">
-          <div class="card-top">
-            <div class="card-title-row">
-              <h3 class="card-name">${p.name}</h3>
-              <span class="status-badge badge-${m.cls}">${m.icon} ${p.status.toUpperCase()}</span>
-            </div>
-            <div class="card-sup">Supervisor: ${p.supervisor||'—'}</div>
-            ${teamHtml}${datesHtml}
-          </div>
-          <div class="card-accordion">
-            ${section('Problem Statement', p.problem, 0)}
-            ${section('Current Progress',  p.progress, 1)}
-            ${section('Challenges',        p.challenges, 2)}
-            ${section('Recommended Solutions', p.intervention, 3)}
-          </div>
-        </div>`;
-    }
-
-    function renderKPIs(projects) {
-      const total = projects.length;
-      const prog  = projects.filter(p => p.status === 'In Progress').length;
-      const notS  = projects.filter(p => p.status === 'Not Started').length;
-      const done  = projects.filter(p => p.status === 'Completed').length;
-      const pct   = n => total ? Math.round(n/total*100)+'%' : '0%';
-
-      document.getElementById('sk-total').outerHTML = `<div class="kpi-number" style="color:#305ca3">${total}</div>`;
-      document.getElementById('sk-prog').outerHTML  = `<div class="kpi-number">${prog}</div>`;
-      document.getElementById('sk-not').outerHTML   = `<div class="kpi-number">${notS}</div>`;
-      document.getElementById('sk-done').outerHTML  = `<div class="kpi-number">${done}</div>`;
-      document.getElementById('sub-prog').innerHTML = `${pct(prog)} of total &nbsp;<span class="kpi-pill">${pct(prog)}</span>`;
-      document.getElementById('sub-not').innerHTML  = `${pct(notS)} of total &nbsp;<span class="kpi-pill">${pct(notS)}</span>`;
-      document.getElementById('sub-done').innerHTML = `${pct(done)} of total &nbsp;<span class="kpi-pill">${pct(done)}</span>`;
-      const ts = new Date().toLocaleString('en-ZA',{dateStyle:'medium',timeStyle:'short'});
-      document.getElementById('sk-updated').outerHTML = `<div class="kpi-number">${ts}</div>`;
-      document.getElementById('dataDot').className = 'data-dot';
-      document.getElementById('dataStatusMsg').textContent = `Live data · ${total} projects loaded from Google Sheets`;
-    }
-
-    function populateSupervisorFilter(projects) {
-      const sups = [...new Set(projects.map(p => p.supervisor).filter(Boolean))].sort();
-      const sel = document.getElementById('supFilter');
-      sups.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
-    }
-
-    /* Render grouped layout */
-    function renderGrouped(projects) {
-      const wrap = document.getElementById('gridWrap');
-      const grouped = {};
-      STATUS_ORDER.forEach(s => grouped[s] = []);
-      projects.forEach(p => { if (grouped[p.status]) grouped[p.status].push(p); });
-
-      let html = '';
-      let cardIdx = 0;
-      STATUS_ORDER.forEach(status => {
-        const list = grouped[status];
-        if (list.length === 0) return;
-        const m = STATUS_META[status];
-        const cardsHtml = list.map(p => buildCard(p, cardIdx++)).join('');
-        html += `
-          <div class="status-group" data-group="${status}">
-            <div class="group-header">
-              <div class="group-dot ${m.dot}"></div>
-              <div class="group-title">${m.label}</div>
-              <span class="group-count ${m.dot}">${list.length} project${list.length!==1?'s':''}</span>
-              <div class="group-line"></div>
-            </div>
-            <div class="proj-grid">${cardsHtml}</div>
-          </div>`;
-      });
-      wrap.innerHTML = html || '<div class="empty-state"><h3>No projects found</h3></div>';
-      updateCount(projects.length, allProjects.length);
-    }
-
-    function applyFilters() {
-      const status = document.getElementById('statusFilter').value;
-      const sup    = document.getElementById('supFilter').value;
-      const search = document.getElementById('searchInput').value.toLowerCase().trim();
-
-      // Re-render grouped with filtered subset
-      const filtered = allProjects.filter(p =>
-        (!status || p.status === status) &&
-        (!sup    || p.supervisor === sup) &&
-        (!search || Object.values(p).join(' ').toLowerCase().includes(search))
-      );
-
-      renderGrouped(filtered);
-
-      if (filtered.length === 0) {
-        document.getElementById('gridWrap').innerHTML =
-          `<div class="empty-state"><h3>No projects match your filters</h3><p>Try adjusting the dropdowns or search term.</p></div>`;
-        updateCount(0, allProjects.length);
-      }
-    }
-
-    function updateCount(visible, total) {
-      document.getElementById('resultCount').innerHTML =
-        `Showing <strong>${visible}</strong> of <strong>${total}</strong>`;
-    }
-
-    async function loadData() {
-      try {
-        const res  = await fetch(CSV_URL);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const text = await res.text();
-        const rows = parseCSV(text);
-        const dataRows = rows.slice(1).filter(r => r[COL.name] && r[COL.name] !== '');
-
-        allProjects = dataRows.map(r => ({
-          name:         r[COL.name]         || '',
-          supervisor:   r[COL.supervisor]   || '',
-          team:         r[COL.team]         || '',
-          start:        r[COL.start]        || '',
-          end:          r[COL.end]          || '',
-          status:       normStatus(r[COL.status]),
-          problem:      r[COL.problem]      || '',
-          progress:     r[COL.progress]     || '',
-          challenges:   r[COL.challenges]   || '',
-          intervention: r[COL.intervention] || '',
-        }));
-
-        renderKPIs(allProjects);
-        populateSupervisorFilter(allProjects);
-        renderGrouped(allProjects);
-
-      } catch (err) {
-        console.error('Failed to load sheet:', err);
-        document.getElementById('dataDot').className = 'data-dot error';
-        document.getElementById('dataStatusMsg').textContent =
-          `⚠️ Could not load live data. Make sure the sheet is shared as "Anyone with the link can view".`;
-        document.getElementById('gridWrap').innerHTML =
-          `<div class="empty-state"><h3>Unable to load project data</h3>
-           <p>Make sure the Google Sheet is shared as <strong>"Anyone with the link can view"</strong>, then refresh.</p>
-           <p style="margin-top:8px;font-size:11px;color:var(--muted)">${err.message}</p></div>`;
-        document.getElementById('resultCount').textContent = 'No data';
-      }
-    }
-
-    document.getElementById('footerDate').textContent = new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'});
-    loadData();
-    </script>
-  </body>
+<section id="dashboardView" class="view hidden">
+  <div class="section-head"><div><h2>Project dashboard</h2><p>Projects are grouped by pillar and status.</p></div><button class="btn btn-primary" onclick="openCapture('add')">＋ Capture project</button></div>
+  <div class="kpis" id="kpiGrid"></div>
+  <div class="tabs" id="pillarTabs"></div>
+  <div class="filters">
+    <input id="searchBox" placeholder="Search project, manager, team or client…" oninput="renderDashboard()">
+    <select id="managerFilter" onchange="renderDashboard()"><option value="">All managers</option></select>
+    <select id="priorityFilter" onchange="renderDashboard()"><option value="">All priorities</option><option>High</option><option>Medium</option><option>Low</option></select>
+    <select id="phaseFilter" onchange="renderDashboard()"><option value="">All phases</option><option>Planning Phase</option><option>Development Phase</option><option>Testing Phase</option><option>Deployment Phase</option></select>
+    <button class="btn btn-soft" onclick="resetFilters()">Reset</button>
+  </div>
+  <div id="dashboardContent" class="loading">Loading projects from Google Sheets…</div>
+</section>
+</main>
+<footer class="footer">ECDOE eLearning Project Management System • <span id="year"></span></footer>
+<script>
+const CONFIG={
+  SHEET_ID:'1iHmUvVBgjF89y1oi6UwJJxHXL0_PlDt6qE-3xiKtdCY',
+  PROJECT_SHEET:'eLearning_project_tracker',
+  TEAM_SHEET:'eLearning_Team',
+  APPS_SCRIPT_URL:'' // Paste your deployed Apps Script Web App URL here to enable saving.
+};
+const PILLARS=['LMS','eTechnology','eContent & Broadcast','Professional Development','Special projects'];
+const STATUSES=['Not Started','In Progress','Completed'];
+const MANAGERS=['Ms. L. Kota','Mrs. N. Nofumba','Mr. V. Sigodi','Dr. E. Stofile'];
+const DEFAULT_TEAM=['Avukonke Ndubela','Isheanopa Marembo','Jaedon Prince','Mthokozisi Mnyobe','Ndilisa Kakana','Thembelani Nofumba','Yamkela Qwebani'];
+const STEPS=['Project information','Ownership','Schedule & outcomes','Progress','Risk & finance'];
+let projects=[],teamPeople=[],activePillar='All',currentStep=0,captureMode='add',loadedProject=null;
+const $=id=>document.getElementById(id);
+function esc(v=''){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function showView(name){['landing','capture','dashboard'].forEach(v=>$(v+'View').classList.toggle('hidden',v!==name));if(name==='dashboard'){loadAllData(false)}window.scrollTo({top:0,behavior:'smooth'})}
+function openCapture(mode){showView('capture');setCaptureMode(mode)}
+function toggleTheme(){const d=document.documentElement;const dark=d.dataset.theme==='dark';d.dataset.theme=dark?'light':'dark';$('themeBtn').innerHTML=dark?'🌙 <span class="label">Dark</span>':'☀️ <span class="label">Light</span>';localStorage.setItem('etl-theme',d.dataset.theme)}
+function buildChecks(){ $('managerChecks').innerHTML=MANAGERS.map(n=>`<label class="check-item"><input type="radio" name="Project Manager/Supervisor" value="${esc(n)}"><span>${esc(n)}</span></label>`).join(''); $('teamChecks').innerHTML=DEFAULT_TEAM.map(n=>`<label class="check-item"><input type="checkbox" name="Team Members" value="${esc(n)}"><span>${esc(n)}</span></label>`).join('') }
+function renderSteps(){ $('steps').innerHTML=STEPS.map((s,i)=>`<div class="step ${i===currentStep?'active':''} ${i<currentStep?'done':''}">${i+1}. ${s}</div>`).join('');document.querySelectorAll('.form-section').forEach((x,i)=>x.classList.toggle('active',i===currentStep));$('prevBtn').style.visibility=currentStep?'visible':'hidden';$('nextBtn').classList.toggle('hidden',currentStep===STEPS.length-1);$('submitBtn').classList.toggle('hidden',currentStep!==STEPS.length-1)}
+function validateStep(){const section=document.querySelector(`.form-section[data-step="${currentStep}"]`);const required=[...section.querySelectorAll('[required]')];for(const el of required){if(!el.value){el.focus();$('validationMsg').textContent='Please complete all required fields before continuing.';return false}}if(currentStep===1){if(!document.querySelector('input[name="Project Manager/Supervisor"]:checked')){ $('validationMsg').textContent='Select a Project Manager / Supervisor.';return false}if(!document.querySelector('input[name="Team Members"]:checked')){$('validationMsg').textContent='Select at least one team member.';return false}}if(currentStep===4){const e=document.querySelector('input[name="Escalation Required"]:checked');if(!e){$('validationMsg').textContent='Select whether escalation is required.';return false}if(e.value==='Yes'&&!$('interventionNeeded').value.trim()){$('validationMsg').textContent='Describe the intervention needed.';return false}}$('validationMsg').textContent='';return true}
+function changeStep(dir){if(dir>0&&!validateStep())return;currentStep=Math.max(0,Math.min(STEPS.length-1,currentStep+dir));renderSteps()}
+function toggleIntervention(show){$('interventionField').classList.toggle('hidden',!show);$('interventionNeeded').required=show;if(!show)$('interventionNeeded').value=''}
+function calculateDuration(){const s=$('startDate').value,e=$('revisedEndDate').value||$('plannedEndDate').value;if(!s||!e){$('durationDays').value='';return}const n=Math.ceil((new Date(e+'T00:00:00')-new Date(s+'T00:00:00'))/86400000);$('durationDays').value=n>=0?n:''}
+function nextProjectId(){let max=-1;projects.forEach(p=>{const m=String(p.ProjectID||'').match(/^eTL(\d+)$/i);if(m)max=Math.max(max,Number(m[1]))});return 'eTL'+String(max+1).padStart(4,'0')}
+function setCaptureMode(mode){captureMode=mode;loadedProject=null;$('addModeBtn').classList.toggle('active',mode==='add');$('updateModeBtn').classList.toggle('active',mode==='update');$('updateSelector').classList.toggle('hidden',mode!=='update');$('captureSubtitle').textContent=mode==='add'?'Add a new eLearning project.':'Select and update an existing project.';resetForm();if(mode==='update')populateExistingProjects()}
+function resetForm(){ $('projectForm').reset();currentStep=0;renderSteps();toggleIntervention(false);$('startDate').disabled=false;$('plannedEndDate').disabled=false;$('dateUpdated').value=new Date().toISOString();$('projectId').value=captureMode==='add'?nextProjectId():'';$('formMessage').innerHTML='' }
+function populateExistingProjects(){const sel=$('existingProject');sel.innerHTML='<option value="">Select a project…</option>'+projects.map((p,i)=>`<option value="${i}">${esc(p.ProjectID||'')} — ${esc(p['Project Name']||'Unnamed project')}</option>`).join('')}
+function setVal(id,v){if($(id))$(id).value=v??''}
+function loadExistingProject(index){if(index===''){resetForm();return}loadedProject=projects[Number(index)];const p=loadedProject;setVal('projectId',p.ProjectID);setVal('pillar',p.Pillar);setVal('projectName',p['Project Name']);setVal('projectDescription',p['Project Description']);setVal('clientDetails',p['Client Details']);setVal('priority',p.Priority);document.querySelectorAll('input[name="Project Manager/Supervisor"]').forEach(x=>x.checked=String(p['Project Manager/Supervisor']||'').split(/[,;|]/).map(s=>s.trim()).includes(x.value));const members=String(p['Team Members']||'').split(/[,;|]/).map(s=>s.trim());document.querySelectorAll('input[name="Team Members"]').forEach(x=>x.checked=members.includes(x.value));setVal('updatedBy',p['Updated By']);setVal('problemStatement',p['Problem Statement']);setVal('expectedOutcome',p['Expected Outcome']);setVal('startDate',toInputDate(p['Start Date']));setVal('plannedEndDate',toInputDate(p['Planned End Date']));setVal('revisedEndDate',toInputDate(p['Revised End Date']));setVal('durationDays',p['Duration (Days)']);setVal('status',p.Status);setVal('currentPhase',p['Current Phase']);setVal('currentProgress',p['Current Progress']);setVal('milestones',p.Milestones);setVal('challenges',p.Challenges);const escReq=String(p['Escalation Required']||'No');const radio=document.querySelector(`input[name="Escalation Required"][value="${escReq}"]`);if(radio)radio.checked=true;toggleIntervention(escReq==='Yes');setVal('interventionNeeded',p['Intervention needed']||p['Intervention Needed']);setVal('budget',numValue(p.Budget));setVal('budgetSpent',numValue(p['Budget Spent']));setVal('comments',p.Comments);$('startDate').disabled=true;$('plannedEndDate').disabled=true;calculateDuration()}
+function toInputDate(v){if(!v)return'';const d=new Date(v);if(isNaN(d))return String(v).slice(0,10);return d.toISOString().slice(0,10)}
+function numValue(v){return String(v??'').replace(/[^0-9.-]/g,'')}
+function collectForm(){const fd=new FormData($('projectForm'));const obj={};for(const [k,v] of fd.entries()){if(k==='Team Members'){obj[k]=obj[k]?[obj[k],v].flat():v}else obj[k]=v}obj['Team Members']=Array.isArray(obj['Team Members'])?obj['Team Members'].join(', '):(obj['Team Members']||'');obj['Project Manager/Supervisor']=document.querySelector('input[name="Project Manager/Supervisor"]:checked')?.value||'';obj['ProjectID']=$('projectId').value;obj['Duration (Days)']=$('durationDays').value;obj['Date Updated']=new Date().toISOString();if(captureMode==='update'&&loadedProject){obj['Start Date']=loadedProject['Start Date'];obj['Planned End Date']=loadedProject['Planned End Date']}return obj}
+async function saveProject(e){e.preventDefault();for(let i=currentStep;i<STEPS.length;i++){currentStep=i;renderSteps();if(!validateStep())return}const data=collectForm();if(!CONFIG.APPS_SCRIPT_URL){$('formMessage').innerHTML='<div class="error-box"><strong>Saving is not configured.</strong> Add your deployed Google Apps Script Web App URL to <code>CONFIG.APPS_SCRIPT_URL</code>. The interface and validation are working, but a static GitHub page cannot write directly to Google Sheets.</div>';window.scrollTo({top:80,behavior:'smooth'});return}try{$('submitBtn').disabled=true;$('submitBtn').textContent='Saving…';const res=await fetch(CONFIG.APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:captureMode==='add'?'create':'update',sheet:CONFIG.PROJECT_SHEET,projectId:data.ProjectID,data})});const out=await res.json();if(!res.ok||out.success===false)throw new Error(out.message||'Save failed');$('formMessage').innerHTML='<div class="success-box"><strong>Project saved successfully.</strong> The dashboard will now refresh.</div>';await loadAllData(true);setCaptureMode('add');window.scrollTo({top:80,behavior:'smooth'})}catch(err){$('formMessage').innerHTML=`<div class="error-box"><strong>Unable to save project.</strong> ${esc(err.message)}</div>`}finally{$('submitBtn').disabled=false;$('submitBtn').textContent='Save project'}}
+function csvUrl(sheet){return`https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheet)}&cache=${Date.now()}`}
+function parseCSV(text){const rows=[];let row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++}else quoted=!quoted}else if(c===','&&!quoted){row.push(cell);cell=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(x=>x!==''))rows.push(row);row=[];cell=''}else cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
+function rowsToObjects(rows){if(!rows.length)return[];const headers=rows[0].map(x=>x.trim());return rows.slice(1).filter(r=>r.some(Boolean)).map(r=>Object.fromEntries(headers.map((h,i)=>[h,(r[i]||'').trim()]))) }
+async function loadAllData(force=true){try{$('backendStatus').textContent='Loading…';const [pr,tr]=await Promise.all([fetch(csvUrl(CONFIG.PROJECT_SHEET)),fetch(csvUrl(CONFIG.TEAM_SHEET))]);if(!pr.ok)throw new Error('Project sheet unavailable');projects=rowsToObjects(parseCSV(await pr.text()));if(tr.ok)teamPeople=rowsToObjects(parseCSV(await tr.text()));populateTeamDropdown();populateFilters();populateExistingProjects();renderDashboard();$('backendStatus').textContent=`Live • ${projects.length} projects`;if(captureMode==='add')$('projectId').value=nextProjectId()}catch(err){$('backendStatus').textContent='Connection error';$('dashboardContent').innerHTML=`<div class="empty"><strong>Unable to load Google Sheets data.</strong><br>${esc(err.message)}<br><br>Share the spreadsheet as “Anyone with the link can view” and confirm both sheet names.</div>`}}
+function populateTeamDropdown(){const sel=$('updatedBy'),old=sel.value;const names=teamPeople.map(x=>[x.Title,x.Firstname,x.Lastname].filter(Boolean).join(' ').replace(/\s+/g,' ').trim()).filter(Boolean);const list=[...new Set(names.length?names:DEFAULT_TEAM)].sort();sel.innerHTML='<option value="">Select your name…</option>'+list.map(n=>`<option>${esc(n)}</option>`).join('');sel.value=old}
+function populateFilters(){const managers=[...new Set(projects.map(p=>p['Project Manager/Supervisor']).filter(Boolean))].sort();$('managerFilter').innerHTML='<option value="">All managers</option>'+managers.map(x=>`<option>${esc(x)}</option>`).join('')}
+function normalizeStatus(v){v=String(v||'').toLowerCase();if(v.includes('complete'))return'Completed';if(v.includes('progress'))return'In Progress';return'Not Started'}
+function normalizePillar(v){const x=String(v||'').toLowerCase();return PILLARS.find(p=>p.toLowerCase()===x)||v||'Unassigned'}
+function money(v){const n=Number(numValue(v));return isFinite(n)?new Intl.NumberFormat('en-ZA',{style:'currency',currency:'ZAR',maximumFractionDigits:0}).format(n):'R0'}
+function isOverdue(p){const end=p['Revised End Date']||p['Planned End Date'];if(!end||normalizeStatus(p.Status)==='Completed')return false;const d=new Date(end);return!isNaN(d)&&d<new Date(new Date().toDateString())}
+function progressPct(p){const s=normalizeStatus(p.Status);if(s==='Completed')return 100;if(s==='Not Started')return 0;const start=new Date(p['Start Date']),end=new Date(p['Revised End Date']||p['Planned End Date']),now=new Date();if(!isNaN(start)&&!isNaN(end)&&end>start)return Math.max(5,Math.min(95,Math.round((now-start)/(end-start)*100)));return 50}
+function renderKPIs(list){const total=list.length,done=list.filter(p=>normalizeStatus(p.Status)==='Completed').length,prog=list.filter(p=>normalizeStatus(p.Status)==='In Progress').length,not=list.filter(p=>normalizeStatus(p.Status)==='Not Started').length,over=list.filter(isOverdue).length,high=list.filter(p=>String(p.Priority).toLowerCase()==='high').length,budget=list.reduce((a,p)=>a+(Number(numValue(p.Budget))||0),0),spent=list.reduce((a,p)=>a+(Number(numValue(p['Budget Spent']))||0),0);$('kpiGrid').innerHTML=[[total,'Total Projects',''],[done,'Completed','done'],[prog,'In Progress','progress'],[not,'Not Started','not'],[over,'Overdue','overdue'],[high,'High Priority','overdue'],[money(budget-spent),'Budget Remaining','gold']].map(x=>`<div class="kpi ${x[2]}"><div class="number">${x[0]}</div><div class="label">${x[1]}</div></div>`).join('')}
+function renderTabs(){const tabs=['All',...PILLARS];$('pillarTabs').innerHTML=tabs.map(p=>`<button class="tab ${p===activePillar?'active':''}" onclick="setPillar('${p.replace(/'/g,"\\'")}')">${esc(p)}</button>`).join('')}
+function setPillar(p){activePillar=p;renderDashboard()}
+function filteredProjects(){const q=$('searchBox').value.toLowerCase().trim(),m=$('managerFilter').value,pri=$('priorityFilter').value,phase=$('phaseFilter').value;return projects.filter(p=>(activePillar==='All'||normalizePillar(p.Pillar)===activePillar)&&(!m||p['Project Manager/Supervisor']===m)&&(!pri||p.Priority===pri)&&(!phase||p['Current Phase']===phase)&&(!q||Object.values(p).join(' ').toLowerCase().includes(q)))}
+function projectCard(p){const s=normalizeStatus(p.Status),cls=s==='Completed'?'done':s==='In Progress'?'progress':'not',pct=progressPct(p),end=p['Revised End Date']||p['Planned End Date'];return`<article class="project ${cls}"><div class="project-head"><div class="project-id">${esc(p.ProjectID||'NO ID')} • ${esc(normalizePillar(p.Pillar))}</div><h4>${esc(p['Project Name']||'Unnamed project')}</h4><div class="badges"><span class="badge">${esc(s)}</span><span class="badge ${(p.Priority||'').toLowerCase()}">${esc(p.Priority||'No priority')}</span>${isOverdue(p)?'<span class="badge high">OVERDUE</span>':''}</div><div class="meta"><div>Manager<strong>${esc(p['Project Manager/Supervisor']||'—')}</strong></div><div>Current Phase<strong>${esc(p['Current Phase']||'—')}</strong></div><div>End Date<strong>${esc(end||'—')}</strong></div><div>Budget Spent<strong>${money(p['Budget Spent'])}</strong></div></div><div class="progressbar" title="Estimated progress"><span style="width:${pct}%"></span></div><div class="hint">Estimated progress: ${pct}% • Updated ${esc(p['Date Updated']||'—')}</div></div><div class="project-details"><details><summary>Description and expected outcome</summary><p>${esc(p['Project Description']||'No description')}\n\nExpected outcome: ${esc(p['Expected Outcome']||'—')}</p></details><details><summary>Current progress and milestones</summary><p>${esc(p['Current Progress']||'No progress update')}\n\nMilestones: ${esc(p.Milestones||'—')}</p></details><details><summary>Challenges and intervention</summary><p>${esc(p.Challenges||'No challenges recorded')}\n\nEscalation: ${esc(p['Escalation Required']||'No')}\nIntervention: ${esc(p['Intervention needed']||p['Intervention Needed']||'—')}</p></details><details><summary>Team and comments</summary><p>Team: ${esc(p['Team Members']||'—')}\nClient: ${esc(p['Client Details']||'—')}\nComments: ${esc(p.Comments||'—')}</p></details></div></article>`}
+function renderDashboard(){renderTabs();const list=filteredProjects();renderKPIs(list);let html='';STATUSES.forEach(s=>{const group=list.filter(p=>normalizeStatus(p.Status)===s);const cls=s==='Completed'?'done':s==='In Progress'?'progress':'not';html+=`<section class="status-section"><div class="status-heading"><span class="dot ${cls}"></span><h3>${s}</h3><span class="count">${group.length}</span></div>${group.length?`<div class="projects">${group.map(projectCard).join('')}</div>`:'<div class="empty">No projects in this status for the selected filters.</div>'}</section>`});$('dashboardContent').innerHTML=html}
+function resetFilters(){$('searchBox').value='';$('managerFilter').value='';$('priorityFilter').value='';$('phaseFilter').value='';activePillar='All';renderDashboard()}
+$('projectForm').addEventListener('submit',saveProject);$('year').textContent=new Date().getFullYear();buildChecks();renderSteps();const savedTheme=localStorage.getItem('etl-theme');if(savedTheme){document.documentElement.dataset.theme=savedTheme;if(savedTheme==='dark')$('themeBtn').innerHTML='☀️ <span class="label">Light</span>'}loadAllData();
+</script>
+</body>
 </html>
