@@ -369,6 +369,86 @@
         align-items: center;
         gap: 7px;
       }
+      .list-toolbar {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 6px;
+      }
+      .list-btn {
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--text);
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        line-height: 1.4;
+      }
+      .list-btn:hover {
+        background: var(--border);
+      }
+      .mini-tasks {
+        margin-top: 10px;
+        padding: 12px;
+        border: 1px dashed var(--border);
+        border-radius: 10px;
+        background: var(--surface2);
+      }
+      .mini-tasks-label {
+        font-size: 12px;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .mini-task-input {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .mini-task-input input {
+        flex: 1;
+        background: var(--surface);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 9px 10px;
+        outline: none;
+      }
+      .mini-task-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .mini-task-item {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+      }
+      .mini-task-item input[type="checkbox"] {
+        width: auto;
+      }
+      .mini-task-item span {
+        flex: 1;
+        font-size: 12.5px;
+      }
+      .mini-task-item.checked span {
+        text-decoration: line-through;
+        color: var(--muted);
+      }
+      .mini-task-remove {
+        border: 0;
+        background: none;
+        color: var(--red);
+        font-weight: 800;
+        cursor: pointer;
+        font-size: 15px;
+        padding: 0 4px;
+        line-height: 1;
+      }
       .wizard-nav {
         display: flex;
         justify-content: space-between;
@@ -611,6 +691,9 @@
         font-size: 12px;
         white-space: pre-wrap;
         line-height: 1.55;
+        margin: 8px 0 0;
+        padding-left: 14px;
+        border-left: 2px solid var(--border);
       }
       .empty {
         text-align: center;
@@ -731,8 +814,7 @@
         <div class="hero">
           <h2 id="welcomeTitle">Welcome to the eLearning Project Tracker</h2>
           <p id="welcomeText">
-            View the dashboard,
-            capture new projects, and update existing ones.
+            View the dashboard, capture new projects, and update existing ones.
           </p>
         </div>
         <div class="choice-grid">
@@ -881,13 +963,15 @@
                         id="updatedBy"
                         name="Updated By"
                         required
-                        onchange="localStorage.setItem('etl-updated-by', this.value)"
+                        onchange="
+                          localStorage.setItem('etl-updated-by', this.value)
+                        "
                       >
                         <option value="">Select your name…</option>
                       </select>
                       <div class="hint">
-                        Select your own name. This is recorded whenever you
-                        save a project.
+                        Select your own name. This is recorded whenever you save
+                        a project.
                       </div>
                     </div>
                   </div>
@@ -896,16 +980,68 @@
                   <h3>3. Need, outcomes and schedule</h3>
                   <div class="form-grid">
                     <div class="field full">
-                      <label>Problem Statement <span class="req">*</span></label
-                      ><textarea
+                      <label>Problem Statement <span class="req">*</span></label>
+                      <div class="list-toolbar">
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('problemStatement','bullet')"
+                          title="Bullet list"
+                        >
+                          •
+                        </button>
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('problemStatement','number')"
+                          title="Numbered list"
+                        >
+                          1.
+                        </button>
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('problemStatement','arrow')"
+                          title="Arrow list"
+                        >
+                          ➜
+                        </button>
+                      </div>
+                      <textarea
                         id="problemStatement"
                         name="Problem Statement"
                         required
                       ></textarea>
                     </div>
                     <div class="field full">
-                      <label>Expected Outcome <span class="req">*</span></label
-                      ><textarea
+                      <label>Expected Outcome <span class="req">*</span></label>
+                      <div class="list-toolbar">
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('expectedOutcome','bullet')"
+                          title="Bullet list"
+                        >
+                          •
+                        </button>
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('expectedOutcome','number')"
+                          title="Numbered list"
+                        >
+                          1.
+                        </button>
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('expectedOutcome','arrow')"
+                          title="Arrow list"
+                        >
+                          ➜
+                        </button>
+                      </div>
+                      <textarea
                         id="expectedOutcome"
                         name="Expected Outcome"
                         required
@@ -974,15 +1110,93 @@
                       </select>
                     </div>
                     <div class="field full">
-                      <label>Current Progress</label
-                      ><textarea
+                      <label>Current Progress</label>
+                      <div class="list-toolbar">
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('currentProgress','bullet')"
+                          title="Bullet list"
+                        >
+                          •
+                        </button>
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('currentProgress','number')"
+                          title="Numbered list"
+                        >
+                          1.
+                        </button>
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('currentProgress','arrow')"
+                          title="Arrow list"
+                        >
+                          ➜
+                        </button>
+                      </div>
+                      <textarea
                         id="currentProgress"
                         name="Current Progress"
                       ></textarea>
+                      <div class="mini-tasks">
+                        <div class="mini-tasks-label">
+                          Mini tasks (to-do list)
+                        </div>
+                        <div class="mini-task-input">
+                          <input
+                            type="text"
+                            id="miniTaskInput"
+                            placeholder="Add a mini task…"
+                            onkeydown="if(event.key==='Enter'){event.preventDefault();addMiniTask();}"
+                          />
+                          <button
+                            type="button"
+                            class="btn btn-soft"
+                            onclick="addMiniTask()"
+                          >
+                            + Add
+                          </button>
+                        </div>
+                        <div id="miniTaskList" class="mini-task-list"></div>
+                        <div class="hint">
+                          Tick a task to add it to Milestones below; untick to
+                          remove it again. Unticked tasks are only kept for
+                          this editing session — only ticked tasks are saved.
+                        </div>
+                      </div>
                     </div>
                     <div class="field full">
-                      <label>Milestones</label
-                      ><textarea id="milestones" name="Milestones"></textarea>
+                      <label>Milestones</label>
+                      <div class="list-toolbar">
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('milestones','bullet')"
+                          title="Bullet list"
+                        >
+                          •
+                        </button>
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('milestones','number')"
+                          title="Numbered list"
+                        >
+                          1.
+                        </button>
+                        <button
+                          type="button"
+                          class="list-btn"
+                          onclick="applyListStyle('milestones','arrow')"
+                          title="Arrow list"
+                        >
+                          ➜
+                        </button>
+                      </div>
+                      <textarea id="milestones" name="Milestones"></textarea>
                     </div>
                   </div>
                 </section>
@@ -1178,7 +1392,9 @@
         activePillar = "All",
         currentStep = 0,
         captureMode = "add",
-        loadedProject = null;
+        loadedProject = null,
+        miniTasks = [],
+        miniTaskSeq = 0;
       const $ = (id) => document.getElementById(id);
       function esc(v = "") {
         return String(v).replace(
@@ -1335,6 +1551,146 @@
         );
         $("durationDays").value = n >= 0 ? n : "";
       }
+      function applyListStyle(id, style) {
+        const ta = $(id);
+        if (!ta) return;
+        const value = ta.value;
+        const start = ta.selectionStart ?? value.length;
+        const end = ta.selectionEnd ?? value.length;
+        const hasSelection = start !== end;
+
+        let lineStart = value.lastIndexOf("\n", start - 1) + 1;
+        let lineEnd = value.indexOf("\n", end);
+        if (lineEnd === -1) lineEnd = value.length;
+
+        // No explicit selection (just a cursor, e.g. typing line by line and
+        // clicking a list button after each one): extend to the whole
+        // contiguous paragraph of non-blank lines, so numbering continues
+        // (1. 2. 3.) instead of resetting to "1." on every single line.
+        if (!hasSelection) {
+          while (lineStart > 0) {
+            const prevLineEnd = lineStart - 1;
+            const prevLineStart =
+              value.lastIndexOf("\n", prevLineEnd - 1) + 1;
+            if (value.slice(prevLineStart, prevLineEnd).trim() === "") break;
+            lineStart = prevLineStart;
+          }
+          while (lineEnd < value.length) {
+            const nextLineStart = lineEnd + 1;
+            let nextLineEnd = value.indexOf("\n", nextLineStart);
+            if (nextLineEnd === -1) nextLineEnd = value.length;
+            if (value.slice(nextLineStart, nextLineEnd).trim() === "") break;
+            lineEnd = nextLineEnd;
+          }
+        }
+
+        const block = value.slice(lineStart, lineEnd);
+        const lines = block.split("\n");
+        const markerRegex = /^(\s*)(?:[•➜]|\d+\.)\s+/;
+
+        const styleMatches = (line) => {
+          if (style === "bullet") return /^\s*•\s+/.test(line);
+          if (style === "arrow") return /^\s*➜\s+/.test(line);
+          if (style === "number") return /^\s*\d+\.\s+/.test(line);
+          return false;
+        };
+
+        const nonEmpty = lines.filter((l) => l.trim() !== "");
+        const alreadyStyled =
+          nonEmpty.length > 0 && nonEmpty.every(styleMatches);
+
+        let n = 1;
+        const newLines = lines.map((line) => {
+          if (line.trim() === "") return line;
+          const stripped = line.replace(markerRegex, "$1");
+          if (alreadyStyled) return stripped;
+          if (style === "bullet") return stripped.replace(/^(\s*)/, "$1• ");
+          if (style === "arrow") return stripped.replace(/^(\s*)/, "$1➜ ");
+          if (style === "number") {
+            const withNum = stripped.replace(/^(\s*)/, `$1${n}. `);
+            n++;
+            return withNum;
+          }
+          return stripped;
+        });
+
+        const newBlock = newLines.join("\n");
+        ta.value = value.slice(0, lineStart) + newBlock + value.slice(lineEnd);
+        ta.focus();
+        ta.selectionStart = lineStart;
+        ta.selectionEnd = lineStart + newBlock.length;
+      }
+      function addMiniTask() {
+        const input = $("miniTaskInput");
+        const text = input.value.trim();
+        if (!text) return;
+        miniTasks.push({
+          id: "mt" + ++miniTaskSeq,
+          text,
+          checked: false,
+        });
+        input.value = "";
+        renderMiniTasks();
+        input.focus();
+      }
+      function toggleMiniTask(id) {
+        const task = miniTasks.find((t) => t.id === id);
+        if (!task) return;
+        task.checked = !task.checked;
+        renderMiniTasks();
+        syncMilestonesFromTasks();
+      }
+      function removeMiniTask(id) {
+        miniTasks = miniTasks.filter((t) => t.id !== id);
+        renderMiniTasks();
+        syncMilestonesFromTasks();
+      }
+      function renderMiniTasks() {
+        const el = $("miniTaskList");
+        if (!el) return;
+        el.innerHTML = miniTasks.length
+          ? miniTasks
+              .map(
+                (t) =>
+                  `<div class="mini-task-item ${t.checked ? "checked" : ""}"><input type="checkbox" ${t.checked ? "checked" : ""} onchange="toggleMiniTask('${t.id}')"><span>${esc(t.text)}</span><button type="button" class="mini-task-remove" onclick="removeMiniTask('${t.id}')" aria-label="Remove task">×</button></div>`,
+              )
+              .join("")
+          : '<div class="hint">No mini tasks yet.</div>';
+      }
+      function syncMilestonesFromTasks() {
+        const ta = $("milestones");
+        if (!ta) return;
+        const otherLines = ta.value
+          .split("\n")
+          .filter((line) => !line.trim().startsWith("☑ "));
+        while (
+          otherLines.length &&
+          otherLines[otherLines.length - 1].trim() === ""
+        ) {
+          otherLines.pop();
+        }
+        const checkedLines = miniTasks
+          .filter((t) => t.checked)
+          .map((t) => `☑ ${t.text}`);
+        ta.value = [...otherLines, ...checkedLines].join("\n");
+      }
+      function loadMiniTasksFromMilestones(text) {
+        miniTasks = [];
+        miniTaskSeq = 0;
+        String(text || "")
+          .split("\n")
+          .forEach((line) => {
+            const m = line.match(/^\s*☑\s+(.*)$/);
+            if (m && m[1].trim()) {
+              miniTasks.push({
+                id: "mt" + ++miniTaskSeq,
+                text: m[1].trim(),
+                checked: true,
+              });
+            }
+          });
+        renderMiniTasks();
+      }
       function nextProjectId() {
         let max = -1;
         projects.forEach((p) => {
@@ -1366,6 +1722,9 @@
         $("dateUpdated").value = new Date().toISOString();
         $("projectId").value = captureMode === "add" ? nextProjectId() : "";
         $("formMessage").innerHTML = "";
+        miniTasks = [];
+        miniTaskSeq = 0;
+        renderMiniTasks();
       }
       function populateExistingProjects() {
         const sel = $("existingProject");
@@ -1420,6 +1779,7 @@
         setVal("currentPhase", p["Current Phase"]);
         setVal("currentProgress", p["Current Progress"]);
         setVal("milestones", p.Milestones);
+        loadMiniTasksFromMilestones(p.Milestones);
         setVal("challenges", p.Challenges);
         const escReq = String(p["Escalation Required"] || "No");
         const radio = document.querySelector(
@@ -1514,7 +1874,8 @@
 
       function isBackendConfigured() {
         return Boolean(
-          CONFIG.APPS_SCRIPT_URL && !CONFIG.APPS_SCRIPT_URL.startsWith("PASTE_"),
+          CONFIG.APPS_SCRIPT_URL &&
+          !CONFIG.APPS_SCRIPT_URL.startsWith("PASTE_"),
         );
       }
 
@@ -1785,6 +2146,7 @@
       $("year").textContent = new Date().getFullYear();
       buildChecks();
       renderSteps();
+      renderMiniTasks();
       const savedTheme = localStorage.getItem("etl-theme");
       if (savedTheme) {
         document.documentElement.dataset.theme = savedTheme;
