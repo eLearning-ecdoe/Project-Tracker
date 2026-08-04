@@ -1163,10 +1163,11 @@
                         <div id="miniTaskList" class="mini-task-list"></div>
                         <div class="hint">
                           Tick a task to add it to Milestones below; untick to
-                          remove it again. Unticked tasks are only kept for
-                          this editing session — only ticked tasks are saved.
+                          remove it again. The full checklist — ticked and
+                          unticked — is saved in the "To Do" column.
                         </div>
                       </div>
+                      <input type="hidden" id="toDo" name="To Do" />
                     </div>
                     <div class="field full">
                       <label>Milestones</label>
@@ -1631,6 +1632,7 @@
         });
         input.value = "";
         renderMiniTasks();
+        syncToDoField();
         input.focus();
       }
       function toggleMiniTask(id) {
@@ -1638,11 +1640,13 @@
         if (!task) return;
         task.checked = !task.checked;
         renderMiniTasks();
+        syncToDoField();
         syncMilestonesFromTasks();
       }
       function removeMiniTask(id) {
         miniTasks = miniTasks.filter((t) => t.id !== id);
         renderMiniTasks();
+        syncToDoField();
         syncMilestonesFromTasks();
       }
       function renderMiniTasks() {
@@ -1656,6 +1660,13 @@
               )
               .join("")
           : '<div class="hint">No mini tasks yet.</div>';
+      }
+      function syncToDoField() {
+        const field = $("toDo");
+        if (!field) return;
+        field.value = miniTasks
+          .map((t) => `${t.checked ? "☑" : "☐"} ${t.text}`)
+          .join("\n");
       }
       function syncMilestonesFromTasks() {
         const ta = $("milestones");
@@ -1674,22 +1685,44 @@
           .map((t) => `☑ ${t.text}`);
         ta.value = [...otherLines, ...checkedLines].join("\n");
       }
-      function loadMiniTasksFromMilestones(text) {
+      function loadMiniTasksFromToDo(toDoText, milestonesText) {
         miniTasks = [];
         miniTaskSeq = 0;
-        String(text || "")
+
+        const parsed = String(toDoText || "")
           .split("\n")
-          .forEach((line) => {
-            const m = line.match(/^\s*☑\s+(.*)$/);
-            if (m && m[1].trim()) {
-              miniTasks.push({
-                id: "mt" + ++miniTaskSeq,
-                text: m[1].trim(),
-                checked: true,
-              });
-            }
+          .map((line) => line.match(/^\s*([☑☐])\s+(.*)$/))
+          .filter(Boolean);
+
+        if (parsed.length) {
+          parsed.forEach((m) => {
+            const text = m[2].trim();
+            if (!text) return;
+            miniTasks.push({
+              id: "mt" + ++miniTaskSeq,
+              text,
+              checked: m[1] === "☑",
+            });
           });
+        } else {
+          // Legacy rows saved before the "To Do" column existed: recover
+          // whatever ticked items were already folded into Milestones.
+          String(milestonesText || "")
+            .split("\n")
+            .forEach((line) => {
+              const m = line.match(/^\s*☑\s+(.*)$/);
+              if (m && m[1].trim()) {
+                miniTasks.push({
+                  id: "mt" + ++miniTaskSeq,
+                  text: m[1].trim(),
+                  checked: true,
+                });
+              }
+            });
+        }
+
         renderMiniTasks();
+        syncToDoField();
       }
       function nextProjectId() {
         let max = -1;
@@ -1725,6 +1758,7 @@
         miniTasks = [];
         miniTaskSeq = 0;
         renderMiniTasks();
+        if ($("toDo")) $("toDo").value = "";
       }
       function populateExistingProjects() {
         const sel = $("existingProject");
@@ -1779,7 +1813,7 @@
         setVal("currentPhase", p["Current Phase"]);
         setVal("currentProgress", p["Current Progress"]);
         setVal("milestones", p.Milestones);
-        loadMiniTasksFromMilestones(p.Milestones);
+        loadMiniTasksFromToDo(p["To Do"], p.Milestones);
         setVal("challenges", p.Challenges);
         const escReq = String(p["Escalation Required"] || "No");
         const radio = document.querySelector(
@@ -2114,7 +2148,7 @@
                 : "not",
           pct = progressPct(p),
           end = p["Revised End Date"] || p["Planned End Date"];
-        return `<article class="project ${cls}"><div class="project-head"><div class="project-id">${esc(p.ProjectID || "NO ID")} • ${esc(normalizePillar(p.Pillar))}</div><h4>${esc(p["Project Name"] || "Unnamed project")}</h4><div class="badges"><span class="badge">${esc(s)}</span><span class="badge ${(p.Priority || "").toLowerCase()}">${esc(p.Priority || "No priority")}</span>${isOverdue(p) ? '<span class="badge high">OVERDUE</span>' : ""}</div><div class="meta"><div>Manager<strong>${esc(p["Project Manager/Supervisor"] || "—")}</strong></div><div>Current Phase<strong>${esc(p["Current Phase"] || "—")}</strong></div><div>End Date<strong>${esc(end || "—")}</strong></div><div>Budget Spent<strong>${money(p["Budget Spent"])}</strong></div></div><div class="progressbar" title="Estimated progress"><span style="width:${pct}%"></span></div><div class="hint">Estimated progress: ${pct}% • Updated ${esc(p["Date Updated"] || "—")}</div></div><div class="project-details"><details><summary>Description and expected outcome</summary><p>${esc(p["Project Description"] || "No description")}\n\nExpected outcome: ${esc(p["Expected Outcome"] || "—")}</p></details><details><summary>Current progress and milestones</summary><p>${esc(p["Current Progress"] || "No progress update")}\n\nMilestones: ${esc(p.Milestones || "—")}</p></details><details><summary>Challenges and intervention</summary><p>${esc(p.Challenges || "No challenges recorded")}\n\nEscalation: ${esc(p["Escalation Required"] || "No")}\nIntervention: ${esc(p["Intervention needed"] || p["Intervention Needed"] || "—")}</p></details><details><summary>Team and comments</summary><p>Team: ${esc(p["Team Members"] || "—")}\nClient: ${esc(p["Client Details"] || "—")}\nComments: ${esc(p.Comments || "—")}</p></details></div></article>`;
+        return `<article class="project ${cls}"><div class="project-head"><div class="project-id">${esc(p.ProjectID || "NO ID")} • ${esc(normalizePillar(p.Pillar))}</div><h4>${esc(p["Project Name"] || "Unnamed project")}</h4><div class="badges"><span class="badge">${esc(s)}</span><span class="badge ${(p.Priority || "").toLowerCase()}">${esc(p.Priority || "No priority")}</span>${isOverdue(p) ? '<span class="badge high">OVERDUE</span>' : ""}</div><div class="meta"><div>Manager<strong>${esc(p["Project Manager/Supervisor"] || "—")}</strong></div><div>Current Phase<strong>${esc(p["Current Phase"] || "—")}</strong></div><div>End Date<strong>${esc(end || "—")}</strong></div><div>Budget Spent<strong>${money(p["Budget Spent"])}</strong></div></div><div class="progressbar" title="Estimated progress"><span style="width:${pct}%"></span></div><div class="hint">Estimated progress: ${pct}% • Updated ${esc(p["Date Updated"] || "—")}</div></div><div class="project-details"><details><summary>Description and expected outcome</summary><p>${esc(p["Project Description"] || "No description")}\n\nExpected outcome: ${esc(p["Expected Outcome"] || "—")}</p></details><details><summary>Current progress and milestones</summary><p>${esc(p["Current Progress"] || "No progress update")}\n\nTo Do: ${esc(p["To Do"] || "—")}\n\nMilestones: ${esc(p.Milestones || "—")}</p></details><details><summary>Challenges and intervention</summary><p>${esc(p.Challenges || "No challenges recorded")}\n\nEscalation: ${esc(p["Escalation Required"] || "No")}\nIntervention: ${esc(p["Intervention needed"] || p["Intervention Needed"] || "—")}</p></details><details><summary>Team and comments</summary><p>Team: ${esc(p["Team Members"] || "—")}\nClient: ${esc(p["Client Details"] || "—")}\nComments: ${esc(p.Comments || "—")}</p></details></div></article>`;
       }
       function renderDashboard() {
         renderTabs();
